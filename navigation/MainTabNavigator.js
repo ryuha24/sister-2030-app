@@ -33,7 +33,7 @@ const CampaignsStack = createStackNavigator(
 );
 
 CampaignsStack.navigationOptions = {
-  tabBarLabel: 'Campaign',
+  tabBarLabel: '캠페인',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -46,12 +46,24 @@ CampaignsStack.navigationOptions = {
   ),
 };
 
-const ReviewsStack = createStackNavigator({
-  ReviewList: ReviewListScreen
-});
+const ReviewsStack = createStackNavigator(
+    {
+      ReviewList: ReviewListScreen,
+      MyPage: MyPageScreen
+    },
+    {
+      initialRouteName: 'ReviewList',
+      navigationOptions: {
+        height: headerHeight,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }
+    }
+);
 
 ReviewsStack.navigationOptions = {
-  tabBarLabel: 'Review',
+  tabBarLabel: '리뷰',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -77,7 +89,7 @@ const SettingsStack = createStackNavigator(
 );
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+  tabBarLabel: '더보기',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}

@@ -7,13 +7,38 @@ import {
     Text,
     TouchableOpacity,
     View,
+    Dimensions,
 } from 'react-native';
 import { WebBrowser } from 'expo';
 
 
 export default class ReviewList extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    _moveMyPage = () => {
+        this.props.navigation.navigate('MyPage');
+    };
     static navigationOptions = {
-        header: null,
+        headerStyle: {
+            backgroundColor: '#fff',
+            shadowColor: 'transparent',
+            shadowRadius: 0,
+            shadowOffset: {
+                height: 0,
+            },
+            borderBottomWidth: 0,
+            marginTop:15,
+            paddingBottom:15,
+        },
+        headerLeft: (
+            <Text style={{marginLeft: 10, fontSize:24, fontWeight: 'bold'}}>리뷰</Text>
+        ),
+        headerRight:(
+            <TouchableOpacity onPress={this._moveMyPage} style={{right: Platform.OS === 'ios' ? Dimensions.get("window").height < 667 ?  '10%' : '5%' : '25%', backgroundColor: 'transparent', paddingLeft: 15, marginRight:10,}}>
+                <Image style={{width: 40, height: 40, borderRadius:20,}} source={{uri:'https://instagram.ficn2-1.fna.fbcdn.net/vp/f54eadce17f495e92c8fad5360f58098/5D655586/t51.2885-19/s150x150/11821094_185810741751051_1102813722_a.jpg?_nc_ht=instagram.ficn2-1.fna.fbcdn.net'}}/>
+            </TouchableOpacity>
+        ),
     };
 
     render() {

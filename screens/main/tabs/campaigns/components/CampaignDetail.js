@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     TouchableHighlight,
     View,
-    Modal
+    Modal, ImageBackground
 } from 'react-native';
 import { WebBrowser } from 'expo';
 
@@ -58,9 +58,49 @@ export default class CampaignDetail extends React.Component {
             </Modal>
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
-                <View style={styles.getStartedContainer}>
-                    <Text style={styles.getStartedText}>캠페인 디에팉암ㄹ</Text>
-
+                <View style={{flex: 1, flexDirection: 'column', flexWrap: 'wrap', alignItems: 'flex-start', width:'100%'}}>
+                    <View style={styles.viewTop}>
+                        <Text style={{fontSize: 21, fontWeight:'bold', marginBottom:5,}}>제목이 나옵니다 슈르르르르르르르</Text>
+                        <Text style={{color:'#919191', marginBottom:20,}}>소제목이 나옵니다 길게 길게 더더더더더더 길게 나와</Text>
+                        <View style={{flexDirection:'row'}}>
+                            <Text style={styles.itemCategory}>카테고리</Text>
+                            <Text style={styles.point}>1000</Text>
+                            <Image style={styles.itemIcon} source={require('../../../../../assets/images/micon.png')} />
+                        </View>
+                    </View>
+                    <View style={styles.viewInfo}>
+                        <View style={{flex:1, flexDirection:'row'}}>
+                            <View style={{flexDirection:'column',width:90, paddingTop:20,}}>
+                                <Text style={styles.viewInfoDate}>리뷰어 모집</Text>
+                                <Text style={styles.viewInfoDate}>리뷰어 선정</Text>
+                                <Text style={styles.viewInfoDate}>리뷰어 마감</Text>
+                            </View>
+                            <View style={{flexDirection:'column',width:90, paddingTop:20,}}>
+                                <Text style={styles.viewInfoDate}>2019.05.30</Text>
+                                <Text style={styles.viewInfoDate}>2019.06.07</Text>
+                                <Text style={styles.viewInfoDate}>2019.06.22</Text>
+                            </View>
+                        </View>
+                        <View style={{alignSelf: 'flex-end', textAlign:'right'}}><Image source={{uri:'https://s3-ap-northeast-1.amazonaws.com/file1.weble.net/campaign/data/229028/thumb200.jpg?bust=1558985348738'}} style={{width: 100, height: 100}} imageStyle={{ borderRadius: 6 }}/></View>
+                    </View>
+                    <View style={styles.viewContent}>
+                        <View style={styles.viewContentWrap}>
+                            <Text style={styles.viewContentTitle}>상세내용</Text>
+                            <Text>상세 내용이 쭉 나옵니다.</Text>
+                        </View>
+                        <View style={styles.viewContentWrap}>
+                            <Text style={styles.viewContentTitle}>유의사항</Text>
+                            <Text>유의사항이 쭉 나옵니다.</Text>
+                        </View>
+                        <View style={styles.viewContentWrap}>
+                            <Text style={styles.viewContentTitle}>필수 삽입 해시태그</Text>
+                            <Text>#해시태그 #나와 #요</Text>
+                        </View>
+                        <View style={styles.viewContentWrap}>
+                            <Text style={styles.viewContentTitle}>가이드</Text>
+                            <Text>가이드 내용이 쭈룩</Text>
+                        </View>
+                    </View>
                 </View>
 
                 <View style={styles.helpContainer}>
@@ -81,87 +121,63 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+        padding:7,
     },
-    developmentModeText: {
-        marginBottom: 20,
-        color: 'rgba(0,0,0,0.4)',
-        fontSize: 14,
-        lineHeight: 19,
-        textAlign: 'center',
+    viewTop: {
+        paddingBottom: 25,
+        marginBottom: 25,
+        borderBottomColor:'#ebebeb',
+        borderBottomWidth: 1,
+        flexDirection: 'column',
+        width:'100%',
     },
-    contentContainer: {
-        paddingTop: 30,
+    itemCategory: {
+        flex:1,
+        textAlign: 'left',
+        paddingTop:2,
+        color:'#ed3847',
     },
-    welcomeContainer: {
-        alignItems: 'center',
-        marginTop: 10,
-        marginBottom: 20,
+    point: {
+        textAlign: 'right',
+        justifyContent: 'flex-end',
+        paddingTop:1,
+        paddingRight:3,
+        fontWeight: '600',
     },
-    welcomeImage: {
-        width: 100,
-        height: 80,
-        resizeMode: 'contain',
-        marginTop: 3,
-        marginLeft: -10,
+    itemIcon: {
+        width: 17,
+        height: 17,
+        justifyContent: 'flex-end',
     },
-    getStartedContainer: {
-        alignItems: 'center',
-        marginHorizontal: 50,
+    viewInfo: {
+        flexDirection: 'row',
+        width:'100%',
+        paddingBottom: 25,
+        marginBottom: 25,
+        borderBottomColor:'#ebebeb',
+        borderBottomWidth: 1,
     },
-    homeScreenFilename: {
-        marginVertical: 7,
+    viewInfoDate: {
+        paddingBottom: 5,
     },
-    codeHighlightText: {
-        color: 'rgba(96,100,109, 0.8)',
+    viewContent: {
+        flexDirection: 'column',
+        width:'100%',
+        marginTop:25,
     },
-    codeHighlightContainer: {
-        backgroundColor: 'rgba(0,0,0,0.05)',
-        borderRadius: 3,
-        paddingHorizontal: 4,
+    viewContentWrap: {
+        flexDirection: 'column',
+        marginBottom: 25,
     },
-    getStartedText: {
-        fontSize: 17,
-        color: 'rgba(96,100,109, 1)',
-        lineHeight: 24,
-        textAlign: 'center',
-    },
-    tabBarInfoContainer: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        ...Platform.select({
-            ios: {
-                shadowColor: 'black',
-                shadowOffset: { height: -3 },
-                shadowOpacity: 0.1,
-                shadowRadius: 3,
-            },
-            android: {
-                elevation: 20,
-            },
-        }),
-        alignItems: 'center',
-        backgroundColor: '#fbfbfb',
-        paddingVertical: 20,
-    },
-    tabBarInfoText: {
-        fontSize: 17,
-        color: 'rgba(96,100,109, 1)',
-        textAlign: 'center',
-    },
-    navigationFilename: {
-        marginTop: 5,
+    viewContentTitle: {
+        fontSize:21,
+        fontWeight: 'bold',
     },
     helpContainer: {
-        marginTop: 15,
-        alignItems: 'center',
-    },
-    helpLink: {
-        paddingVertical: 15,
-    },
-    helpLinkText: {
-        fontSize: 14,
-        color: '#2e78b7',
+        width:'100%',
+        position:'absolute',
+        left:0,
+        bottom:0,
+        padding:15,
     },
 });

@@ -55,12 +55,29 @@ function* login(action) {
     try {
         let userInfo = yield call(api, 'POST', '/users/login', {email: action.email, password: action.password});
         const data = yield all({
-            user: call(api, 'GET', '/users/userInfo/'+userInfo.id, {}), //instagramId, follower, following, applicationInfo
-            campaigns: call(api, 'GET', '/campaign', {}),
+            user: call(api, 'GET', '/users/mypage/'+userInfo.id, {}), //instagramId, follower, following, applicationInfo
         });
 
         yield put(updateData(data));
-        yield call(navigateToMain, navigation);
+        yield call(navigateToMain, action.navigation);
+        yield put(loginSuccess());
+    } catch(err) {
+        action.navigation.pop();
+        yield put(loginFailure());
+        alert('로그인 실패!');
+    }
+}
+
+function* getProfile(action) {
+    try {
+        console.log("getProfile saga", action);
+        let userInfo = yield call(api, 'GET', '/users/mypage/'+action.id, {});
+        const data = yield all({
+            user: call(api, 'GET', '/users/mypage/'+action.id, {}), //instagramId, follower, following, applicationInfo
+        });
+
+        yield put(updateData(data));
+        yield call(navigateToMain, action.navigation);
         yield put(loginSuccess());
     } catch(err) {
         action.navigation.pop();
@@ -70,6 +87,7 @@ function* login(action) {
 }
 
 function* accountSaga() {
+    yield takeEvery('GET_PROFILE', getProfile);
     yield takeEvery('LOGIN', login);
     yield takeEvery('SIGN_UP', signUp);
     yield takeEvery('CRAWLING', crawlingInstagram);

@@ -9,12 +9,14 @@ import {
     View,
     Dimensions, ImageBackground,
 } from 'react-native';
+import {connect} from "react-redux";
 
 
-export default class ReviewList extends React.Component {
+export class ReviewList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            userInfo: props.userData.user,
             applicationList : [],
             category: {
                 product: "제품",
@@ -33,7 +35,8 @@ export default class ReviewList extends React.Component {
         }
     }
     componentDidMount(){
-        return fetch('http://52.79.228.214:3000/users/applications/list/a9727da0-7fe2-11e9-b710-e1fd2ed2acab')
+        let _this = this;
+        return fetch('http://52.79.228.214:3000/users/applications/list/'+_this.state.userInfo.USER_ID)
         .then((response) => response.json())
         .then((responseJson) => {
             console.log(responseJson.data);
@@ -84,7 +87,7 @@ export default class ReviewList extends React.Component {
         <View style={styles.container}>
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                 {
-                    this.state.applicationList ? (
+                    this.state.applicationList.length>0 ? (
                         this.state.applicationList.map((application,index) => {
                             return (
                             <TouchableOpacity key={index} onPress={()=>this._moveReviewDetail(application.APPLICATION_ID)} style={styles.itemBtn}>
@@ -198,3 +201,11 @@ const styles = StyleSheet.create({
         color: '#2e78b7',
     },
 });
+
+function mapStateToProps (state) {
+    return {
+        userData: state.data
+    }
+}
+
+export default connect(mapStateToProps)(ReviewList);

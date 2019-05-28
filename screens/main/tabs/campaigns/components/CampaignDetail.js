@@ -8,15 +8,18 @@ import {
     TouchableOpacity,
     TouchableHighlight,
     View,
-    Modal, ImageBackground
+    Modal, ImageBackground,
+    WebView
 } from 'react-native';
+import {connect} from "react-redux";
 import dateFormat from 'dateformat';
 import LottieView from 'lottie-react-native';
 
-export default class CampaignDetail extends React.Component {
+export class CampaignDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            userInfo: props.userData.user,
             modalVisible: false,
             campaign: {},
             category: {
@@ -114,7 +117,7 @@ export default class CampaignDetail extends React.Component {
                     <View style={styles.viewContent}>
                         <View style={styles.viewContentWrap}>
                             <Text style={styles.viewContentTitle}>상세내용</Text>
-                            <Text>{this.state.campaign.description}</Text>
+                            <WebView source={{html: this.state.campaign.description}} />
                         </View>
                         <View style={styles.viewContentWrap}>
                             <Text style={styles.viewContentTitle}>유의사항</Text>
@@ -229,3 +232,11 @@ const styles = StyleSheet.create({
         justifyContent: undefined,
     },
 });
+
+function mapStateToProps (state) {
+    return {
+        userData: state.data
+    }
+}
+
+export default connect(mapStateToProps)(CampaignDetail);

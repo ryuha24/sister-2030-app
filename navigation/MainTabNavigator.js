@@ -175,5 +175,5 @@ SettingsStack.navigationOptions = {
 export default createBottomTabNavigator({
   CampaignsStack,
   ReviewsStack,
-  SettingsStack,
+  SettingsStack
 });

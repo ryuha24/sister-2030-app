@@ -11,12 +11,14 @@ import {
     Modal, ImageBackground
 } from 'react-native';
 import dateFormat from 'dateformat';
+import {connect} from "react-redux";
 
 
-export default class ReviewDetail extends React.Component {
+export class ReviewDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            userInfo: props.userData.user,
             modalVisible: false,
             application: {
                 CAMPAIGN: {}
@@ -196,3 +198,11 @@ const styles = StyleSheet.create({
         padding:15,
     },
 });
+
+function mapStateToProps (state) {
+    return {
+        userData: state.data
+    }
+}
+
+export default connect(mapStateToProps)(ReviewDetail)

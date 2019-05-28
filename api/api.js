@@ -1,7 +1,7 @@
 import {AsyncStorage} from 'react-native';
 
-// const baseUri = 'http://52.79.228.214:3000';
-const baseUri = 'http://192.168.219.102:3000';
+const baseUri = 'http://52.79.228.214:3000';
+// const baseUri = 'http://192.168.219.102:3000';
 async function rootApi (method, route, args) {
     try {
         switch (method) {

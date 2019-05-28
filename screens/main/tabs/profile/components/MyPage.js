@@ -8,13 +8,32 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { WebBrowser } from 'expo';
 
 
 export default class MyPage extends React.Component {
-    static navigationOptions = {
-        header: null,
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            modalVisible: false,
+            user: {},
+        }
+    }
+    componentDidMount(){
+        return fetch('http://52.79.228.214:3000/users/mypage/a9727da0-7fe2-11e9-b710-e1fd2ed2acab')
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson);
+            this.setState({
+                user: responseJson
+            }, function(){
+
+            });
+
+        })
+        .catch((error) =>{
+            console.error(error);
+        });
+    }
 
     render() {
         return (
@@ -22,7 +41,7 @@ export default class MyPage extends React.Component {
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
                 <View style={styles.getStartedContainer}>
-                    <Text style={styles.getStartedText}>마이페이지이임이린읾ㄴㅇㄹ</Text>
+                    <Text>{this.state.user.USER_EMAIL}</Text>
 
                 </View>
 

@@ -7,17 +7,48 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Dimensions,
+    Dimensions, ImageBackground,
 } from 'react-native';
 
 
 export default class ReviewList extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            applicationList : [],
+            category: {
+                product: "제품",
+                consumer: "체험단",
+                reporters: "기자단",
+                comment: "댓글"
+            },
+            status: {
+                waiting: "대기중",
+                proceeding: "선정중",
+                recruiting: "모집중",
+                endcampaign: "종료",
+                review: "리뷰중",
+                dontuser: "미달"
+            }
+        }
     }
-    _moveMyPage = () => {
-        this.props.navigation.navigate('MyPage');
-    };
+    componentDidMount(){
+        return fetch('http://52.79.228.214:3000/users/applications/list/a9727da0-7fe2-11e9-b710-e1fd2ed2acab')
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson.data);
+            this.setState({
+                isLoading: false,
+                applicationList: responseJson.data
+            }, function(){
+
+            });
+
+        })
+        .catch((error) =>{
+            console.error(error);
+        });
+    }
     static navigationOptions = ({ navigation }) => {
         return {
             headerStyle: {
@@ -52,18 +83,31 @@ export default class ReviewList extends React.Component {
         return (
         <View style={styles.container}>
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-
-                <View style={styles.getStartedContainer}>
-
-                    <Text style={styles.getStartedText}>여기는 리뷰리스트트트트트트</Text>
-
-                </View>
+                {
+                    this.state.applicationList ? (
+                        this.state.applicationList.map((application,index) => {
+                            return (
+                            <TouchableOpacity key={index} onPress={()=>this._moveReviewDetail(application.APPLICATION_ID)} style={styles.itemBtn}>
+                                <View style={styles.itemBox}>
+                                    <Text>{application.CAMPAIGN.CAMPAIGN_TITLE}</Text>
+                                </View>
+                            </TouchableOpacity>
+                            )
+                        })
+                    ) : (
+                        <Text>아직 지원 내역이 없습니당:)</Text>
+                    )
+                }
 
             </ScrollView>
         </View>
         );
     }
-
+    _moveReviewDetail = applicationId => {
+        this.props.navigation.navigate('ReviewDetail', {
+            applicationId: applicationId
+        });
+    };
 }
 
 const styles = StyleSheet.create({

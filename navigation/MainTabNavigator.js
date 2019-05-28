@@ -6,6 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import CampaignListScreen from '../screens/main/tabs/campaigns/components/CampaignList';
 import CampaignDetailScreen from '../screens/main/tabs/campaigns/components/CampaignDetail';
 import ReviewListScreen from '../screens/main/tabs/reviews/components/ReviewList';
+import ReviewDetailScreen from '../screens/main/tabs/reviews/components/ReviewDetail';
 import SettingScreen from '../screens/main/tabs/profile/components/Setting';
 import MyPageScreen from '../screens/main/tabs/profile/components/MyPage';
 import MainHeader from "../screens/main/components/MainHeader";
@@ -68,7 +69,39 @@ CampaignsStack.navigationOptions = {
 
 const ReviewsStack = createStackNavigator(
     {
-      ReviewList: ReviewListScreen,
+      ReviewList:{
+        screen: ReviewListScreen
+      },
+      ReviewDetail: {
+        screen: ReviewDetailScreen,
+        navigatorStyle: {
+          navBarHidden: false,
+        },
+        navigationOptions: {
+          headerStyle: {
+            backgroundColor: '#fff',
+            shadowColor: 'transparent',
+            shadowRadius: 0,
+            shadowOffset: {
+              height: 0,
+            },
+            borderBottomWidth: 0,
+            marginTop:15,
+            paddingBottom:15,
+          },
+          title:'리뷰상세',
+          headerTintColor:'#000'
+        }
+      },
+    },
+    {
+      initialRouteName: 'ReviewList',
+      navigationOptions: {
+        height: headerHeight,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }
     }
 );
 
@@ -84,8 +117,30 @@ ReviewsStack.navigationOptions = {
 
 const SettingsStack = createStackNavigator(
   {
-    Settings: SettingScreen,
-    MyPage: MyPageScreen
+    Settings: {
+      screen: SettingScreen
+    },
+    MyPage: {
+      screen: MyPageScreen,
+      navigatorStyle: {
+        navBarHidden: false,
+      },
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: 'transparent',
+          shadowRadius: 0,
+          shadowOffset: {
+            height: 0,
+          },
+          borderBottomWidth: 0,
+          marginTop:15,
+          paddingBottom:15,
+        },
+        title:'내정보',
+        headerTintColor:'#000'
+      }
+    },
   },
   {
     initialRouteName: 'Settings',

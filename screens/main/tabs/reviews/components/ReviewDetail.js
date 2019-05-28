@@ -13,12 +13,14 @@ import {
 import dateFormat from 'dateformat';
 
 
-export default class CampaignDetail extends React.Component {
+export default class ReviewDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             modalVisible: false,
-            campaign: {},
+            application: {
+                CAMPAIGN: {}
+            },
             category: {
                 product: "제품",
                 consumer: "체험단",
@@ -37,12 +39,12 @@ export default class CampaignDetail extends React.Component {
     }
 
     componentDidMount(){
-        return fetch('http://52.79.228.214:3000/campaign/campaignViews/'+this.props.navigation.getParam('campaignId'))
+        return fetch('http://52.79.228.214:3000/users/applied/'+this.props.navigation.getParam('applicationId'))
         .then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson);
+            console.log("review",responseJson);
             this.setState({
-                campaign: responseJson
+                application: responseJson.data
             }, function(){
 
             });
@@ -91,11 +93,11 @@ export default class CampaignDetail extends React.Component {
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                 <View style={{flex: 1, flexDirection: 'column', flexWrap: 'wrap', alignItems: 'flex-start', width:'100%'}}>
                     <View style={styles.viewTop}>
-                        <Text style={{fontSize: 21, fontWeight:'bold', marginBottom:5,}}>{this.state.campaign.title}</Text>
-                        <Text style={{color:'#919191', marginBottom:20,}}>{this.state.campaign.subtitle}</Text>
+                        <Text style={{fontSize: 21, fontWeight:'bold', marginBottom:5,}}>{this.state.application.CAMPAIGN.CAMPAIGN_TITLE}</Text>
+                        <Text style={{color:'#919191', marginBottom:20,}}>{this.state.application.CAMPAIGN.CAMPAIGN_SUB_TITLE}</Text>
                         <View style={{flexDirection:'row'}}>
-                            <Text style={styles.itemCategory}>{this.state.category[this.state.campaign.category]}</Text>
-                            <Text style={styles.point}>{this.state.campaign.point}</Text>
+                            <Text style={styles.itemCategory}>{this.state.category[this.state.application.CAMPAIGN.CAMPAIGN_CATEGORY]}</Text>
+                            <Text style={styles.point}>{this.state.application.CAMPAIGN.CAMPAIGN_POINT}</Text>
                             <Image style={styles.itemIcon} source={require('../../../../../assets/images/micon.png')} />
                         </View>
                     </View>
@@ -107,30 +109,12 @@ export default class CampaignDetail extends React.Component {
                                 <Text style={styles.viewInfoDate}>리뷰어 마감</Text>
                             </View>
                             <View style={{flexDirection:'column',width:90, paddingTop:20,}}>
-                                <Text style={styles.viewInfoDate}>{dateFormat(this.state.campaign.startDate, "yyyy-mm-dd")}</Text>
-                                <Text style={styles.viewInfoDate}>{dateFormat(this.state.campaign.selectDate, "yyyy-mm-dd")}</Text>
-                                <Text style={styles.viewInfoDate}>{dateFormat(this.state.campaign.endDate, "yyyy-mm-dd")}</Text>
+                                <Text style={styles.viewInfoDate}>{dateFormat(this.state.application.CAMPAIGN.CAMPAIGN_ST_DT, "yyyy-mm-dd")}</Text>
+                                <Text style={styles.viewInfoDate}>{dateFormat(this.state.application.CAMPAIGN.CAMPAIGN_SELECT_DATE, "yyyy-mm-dd")}</Text>
+                                <Text style={styles.viewInfoDate}>{dateFormat(this.state.application.CAMPAIGN.CAMPAIGN_END_DATE, "yyyy-mm-dd")}</Text>
                             </View>
                         </View>
-                        <View style={{alignSelf: 'flex-end', textAlign:'right'}}><Image source={{uri:this.state.campaign.thumbnailUrl}} style={{width: 100, height: 100}} imageStyle={{ borderRadius: 6 }}/></View>
-                    </View>
-                    <View style={styles.viewContent}>
-                        <View style={styles.viewContentWrap}>
-                            <Text style={styles.viewContentTitle}>상세내용</Text>
-                            <Text>{this.state.campaign.description}</Text>
-                        </View>
-                        <View style={styles.viewContentWrap}>
-                            <Text style={styles.viewContentTitle}>유의사항</Text>
-                            <Text>{this.state.campaign.warning}</Text>
-                        </View>
-                        <View style={styles.viewContentWrap}>
-                            <Text style={styles.viewContentTitle}>필수 삽입 해시태그</Text>
-                            <Text>{this.state.campaign.hashtag}</Text>
-                        </View>
-                        <View style={styles.viewContentWrap}>
-                            <Text style={styles.viewContentTitle}>가이드</Text>
-                            <Text>{this.state.campaign.guide}</Text>
-                        </View>
+                        <View style={{alignSelf: 'flex-end', textAlign:'right'}}><Image source={{uri:this.state.application.CAMPAIGN.CAMPAIGN_THUMB_IMAGE}} style={{width: 100, height: 100}} imageStyle={{ borderRadius: 6 }}/></View>
                     </View>
                 </View>
 
@@ -139,7 +123,7 @@ export default class CampaignDetail extends React.Component {
                     onPress={() => {
                         this.setModalVisible(true);
                     }}>
-                        <Text style={styles.helpLinkText}>여기 누르면 신청하는거임</Text>
+                        <Text style={styles.helpLinkText}>여기 누르면 리뷰 남김</Text>
                     </TouchableHighlight>
                 </View>
             </ScrollView>

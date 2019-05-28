@@ -7,7 +7,6 @@ import {
     Text,
     TouchableOpacity,
     View,
-    FlatList,
     ActivityIndicator,
     Dimensions,
     ImageBackground,
@@ -17,7 +16,21 @@ export default class CampaignList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            campaigns: []
+            campaigns: [],
+            category: {
+                product: "제품",
+                consumer: "체험단",
+                reporters: "기자단",
+                comment: "댓글"
+            },
+            status: {
+                waiting: "대기중",
+                proceeding: "선정중",
+                recruiting: "모집중",
+                endcampaign: "종료",
+                review: "리뷰중",
+                dontuser: "미달"
+            }
         }
     }
     componentDidMount(){
@@ -37,9 +50,6 @@ export default class CampaignList extends React.Component {
             console.error(error);
         });
     }
-    _moveMyPage = () => {
-        this.props.navigation.navigate('MyPage');
-    };
     static navigationOptions = ({ navigation }) => {
         return {
             headerStyle: {
@@ -84,6 +94,28 @@ export default class CampaignList extends React.Component {
         <View style={styles.container}>
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                 <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', paddingLeft:7, paddingRight:7,}}>
+                    {
+                        this.state.campaigns.map((campaign,index) => {
+                            return (
+                                <TouchableOpacity key={index} onPress={()=>this._moveCampaignDetail(campaign.id)} style={styles.itemBtn}>
+                                    <View style={styles.itemBox}>
+                                        <ImageBackground source={{uri:campaign.thumbnail}} style={{width: '100%', height: '100%'}} imageStyle={{ borderRadius: 6 }}></ImageBackground>
+                                        <View style={{flexDirection:'row', marginTop:12,}}>
+                                            <Text style={styles.itemCategory}>{this.state.category[campaign.category]}</Text>
+                                            <Text style={styles.point}>{campaign.point}</Text>
+                                            <Image style={styles.itemIcon} source={require('../../../../../assets/images/micon.png')} />
+                                        </View>
+                                        <Text style={styles.itemTitle}>{campaign.title}</Text>
+                                        <Text style={styles.itemSubTitle}>{campaign.subtitle}</Text>
+                                        <View style={{flexDirection:'row', marginTop:12,}}>
+                                            <Text style={styles.itemUsers}>신청 {campaign.userAppliedCount}</Text>
+                                            <Text style={styles.itemUsersMax}>/ {campaign.applyCount} 명</Text>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
                     <TouchableOpacity onPress={this._moveCampaignDetail} style={styles.itemBtn}>
                         <View style={styles.itemBox}>
                             <ImageBackground source={{uri:'https://s3-ap-northeast-1.amazonaws.com/file1.weble.net/campaign/data/229028/thumb200.jpg?bust=1558985348738'}} style={{width: '100%', height: '100%'}} imageStyle={{ borderRadius: 6 }}></ImageBackground>

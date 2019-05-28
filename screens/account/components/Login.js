@@ -12,6 +12,9 @@ import {
 } from 'react-native';
 import Slideshow from 'react-native-slideshow';
 
+import { connect } from "react-redux";
+import { login } from '../action';
+
 export class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -43,7 +46,8 @@ export class Login extends React.Component {
     }
 
     _InstaLogin = () => this.props.navigation.navigate('InstaLogin');
-    _login = () => this.props.navigation.navigate('Main');
+    // _login = () => this.props.navigation.navigate('Main');
+    _login = () => this.props.login(this.state.email, this.state.password, this.props.navigation);
     _signUp = () => this.props.navigation.navigate('SignUp');
 
     state = {
@@ -152,5 +156,16 @@ const styles = StyleSheet.create({
     }
 });
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Login);
-export default Login;
+function mapStateToProps (state) {
+    return {
+        screenData: state
+    }
+}
+
+function mapDispatchToProps (dispatch) {
+    return {
+        login: (email, password, navigation) => dispatch(login(email, password, navigation))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
+// export default Login;

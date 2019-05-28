@@ -22,7 +22,8 @@ const initialState = {
         },
         instagram: {
             succeed: false,
-        }
+        },
+        profile: {}
     },
 };
 

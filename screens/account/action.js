@@ -49,3 +49,8 @@ export const loginFailure = () => ({
     type: 'LOGIN_FAILURE'
 });
 
+export const getProfile = (userId, navigation) => ({
+    type: 'GET_PROFILE',
+    id: userId,
+    navigation: navigation
+});

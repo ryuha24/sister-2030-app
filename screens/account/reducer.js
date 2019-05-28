@@ -65,6 +65,11 @@ export default function accountReducer (state = initialState.account, action) {
                     succeed: false,
                 }
             };
+        case 'GET_PROFILE':
+            return {
+                ...state,
+                profile: action.data
+            };
         default:
             return state;
     }

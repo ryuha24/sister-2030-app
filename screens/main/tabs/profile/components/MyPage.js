@@ -8,18 +8,21 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import {connect} from "react-redux";
 
 
-export default class MyPage extends React.Component {
+export class MyPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            user:{},
             modalVisible: false,
-            user: {},
+            userInfo: props.userData.user,
         }
     }
     componentDidMount(){
-        return fetch('http://52.79.228.214:3000/users/mypage/a9727da0-7fe2-11e9-b710-e1fd2ed2acab')
+        let _this = this;
+        return fetch('http://192.168.219.102:3000/users/mypage/'+_this.state.userInfo.USER_ID)
         .then((response) => response.json())
         .then((responseJson) => {
             console.log(responseJson);
@@ -141,3 +144,11 @@ const styles = StyleSheet.create({
         color: '#2e78b7',
     },
 });
+
+function mapStateToProps (state) {
+    return {
+        userData: state.data
+    }
+}
+
+export default connect(mapStateToProps)(MyPage);

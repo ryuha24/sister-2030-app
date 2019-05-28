@@ -10,12 +10,14 @@ import {
     ActivityIndicator,
     Dimensions,
     ImageBackground,
+    RefreshControl
 } from 'react-native';
 
 export default class CampaignList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            refreshing: false,
             campaigns: [],
             category: {
                 product: "제품",
@@ -33,11 +35,24 @@ export default class CampaignList extends React.Component {
             }
         }
     }
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+        fetch('http://52.79.228.214:3000/campaign/campaignList')
+        .then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                refreshing: false,
+                campaigns: responseJson
+            }, function(){
+
+            });
+
+        })
+    };
     componentDidMount(){
         return fetch('http://52.79.228.214:3000/campaign/campaignList')
         .then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson);
             this.setState({
                 isLoading: false,
                 campaigns: responseJson
@@ -67,7 +82,8 @@ export default class CampaignList extends React.Component {
             <Text style={{marginLeft: 10, fontSize: 24, fontWeight: 'bold'}}>셀럽들의 놀이터</Text>
             ),
             headerRight: (
-            <TouchableOpacity onPress={()=>navigation.navigate('MyPage')} style={{
+            // onPress={()=>navigation.navigate('MyPage')}
+            <TouchableOpacity style={{
                 right: Platform.OS === 'ios' ? Dimensions.get("window").height < 667 ? '10%' : '5%' : '25%',
                 backgroundColor: 'transparent',
                 paddingLeft: 15,
@@ -92,7 +108,16 @@ export default class CampaignList extends React.Component {
         return (
             // onPress={this._moveCampaignDetail} 디테일 페이지 고고쓰
         <View style={styles.container}>
-            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                refreshControl={
+                    <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._onRefresh}
+                    />
+                }
+            >
                 <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', paddingLeft:7, paddingRight:7,}}>
                     {
                         this.state.campaigns.map((campaign,index) => {

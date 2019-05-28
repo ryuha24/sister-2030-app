@@ -11,6 +11,7 @@ import {
     Modal,
     TextInput,
     Clipboard,
+    RefreshControl
 } from 'react-native';
 import dateFormat from 'dateformat';
 import {connect} from "react-redux";
@@ -20,6 +21,7 @@ export class ReviewDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            refreshing: false,
             userInfo: props.userData.user,
             modalVisible: false,
             application: {
@@ -42,6 +44,23 @@ export class ReviewDetail extends React.Component {
             clipboardContent: null,
         }
     }
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+        fetch('http://52.79.228.214:3000/users/applied/'+this.props.navigation.getParam('applicationId'))
+        .then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                refreshing: false,
+                application: responseJson.data
+            }, function(){
+
+            });
+
+        })
+        .catch((error) =>{
+            console.error(error);
+        });
+    }
 
     readFromClipboard = async () => {
         const clipboardContent = await Clipboard.getString();
@@ -57,7 +76,6 @@ export class ReviewDetail extends React.Component {
         return fetch('http://52.79.228.214:3000/users/applied/'+this.props.navigation.getParam('applicationId'))
         .then((response) => response.json())
         .then((responseJson) => {
-            console.log("review",responseJson);
             this.setState({
                 application: responseJson.data
             }, function(){
@@ -105,7 +123,16 @@ export class ReviewDetail extends React.Component {
                     </View>
                 </View>
             </Modal>
-            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                refreshControl={
+                    <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._onRefresh}
+                    />
+                }
+            >
                 <View style={{flex: 1, flexDirection: 'column', flexWrap: 'wrap', alignItems: 'flex-start', width:'100%'}}>
                     <View style={styles.viewTop}>
                         <Text style={{fontSize: 21, fontWeight:'bold', marginBottom:5,}}>{this.state.application.CAMPAIGN.CAMPAIGN_TITLE}</Text>

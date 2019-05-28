@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, Alert,TextInput,TouchableOpacity,KeyboardAvoidingView,ScrollView,Platform,} from 'react-native';
+import { crawlingInfo } from "../action";
+import { connect } from "react-redux";
 
 export class SignUp extends React.Component {
     constructor(props) {
@@ -21,14 +23,14 @@ export class SignUp extends React.Component {
 
     nextStep = () => {
         if (this.state.password === this.state.repassword) {
-            // this.props.crawlingInfo(this.state.nickname, this.state.email, this.state.password,this.state.instaId, this.props.navigation);
+            this.props.crawlingInfo(this.state.nickname, this.state.email, this.state.password,this.state.instaId, this.props.navigation);
             // Alert.alert('ok');
             // this.props.navigation.navigate('Account');
 
             // signUp(this.state.uid, this.state.password, this.state.nickname)
             // 	.then(() => this.props.navigation.navigate('Account'))
             // 	.catch((error) => Alert.alert('ERROR', error));
-            this.props.navigation.navigate('InstagramCheck');
+            // this.props.navigation.navigate('InstagramCheck');
         } else {
             Alert.alert('ERROR', 'Password mismatch!');
         }
@@ -150,6 +152,17 @@ const styles = StyleSheet.create({
     },
 });
 
+function mapStateToProps (state) {
+    return {
+        screenData: state.account
+    }
+}
 
-// export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
-export default SignUp;
+function mapDispatchToProps (dispatch) {
+    return {
+        crawlingInfo: (nickname, email, password, instaId, navigation) => dispatch(crawlingInfo(nickname, email, password, instaId, navigation))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+// export default SignUp;

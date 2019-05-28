@@ -10,16 +10,33 @@ import {
     View,
     Modal
 } from 'react-native';
-import { WebBrowser } from 'expo';
 
 
 export default class CampaignDetail extends React.Component {
-    static navigationOptions = {
-        header: null,
-    };
-    state = {
-        modalVisible: false,
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            modalVisible: false,
+            campaign: {}
+        }
+    }
+
+    componentDidMount(){
+        return fetch('http://192.168.219.102:3000/campaign/campaignViews/'+this.props.navigation.getParam('campaignId'))
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson);
+            this.setState({
+                campaign: responseJson
+            }, function(){
+
+            });
+
+        })
+        .catch((error) =>{
+            console.error(error);
+        });
+    }
 
     setModalVisible(visible) {
         this.setState({modalVisible: visible});
@@ -59,7 +76,7 @@ export default class CampaignDetail extends React.Component {
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
                 <View style={styles.getStartedContainer}>
-                    <Text style={styles.getStartedText}>캠페인 디에팉암ㄹ</Text>
+                    <Text style={styles.getStartedText}>{this.state.campaign}</Text>
 
                 </View>
 

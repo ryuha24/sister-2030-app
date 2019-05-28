@@ -7,34 +7,59 @@ import {
     Text,
     TouchableOpacity,
     View,
+    FlatList,
+    ActivityIndicator
 } from 'react-native';
-import { WebBrowser } from 'expo';
 
 export default class CampaignList extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            campaigns: []
+        }
     }
 
-    static navigationOptions = {
-        header: null,
-    };
+    componentDidMount(){
+        return fetch('http://192.168.219.102:3000/campaign/campaignList')
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson);
+            this.setState({
+                isLoading: false,
+                campaigns: responseJson
+            }, function(){
+
+            });
+
+        })
+        .catch((error) =>{
+            console.error(error);
+        });
+    }
 
     render() {
+        if(this.state.isLoading){
+            return(
+            <View style={{flex: 1, padding: 20}}>
+                <ActivityIndicator/>
+            </View>
+            )
+        }
+
         return (
         <View style={styles.container}>
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
-                <View style={styles.getStartedContainer}>
-                    <Text style={styles.getStartedText}>캠페인 리스트</Text>
-
-
-                    <Text style={styles.getStartedText}>
-                        Change this text and your app will automatically reload.
-                    </Text>
+                <View style={{flex: 1, paddingTop:20}}>
+                    <FlatList
+                    data={this.state.campaigns}
+                    renderItem={({item}) => <Text>{item.title}</Text>}
+                    keyExtractor={({id}, index) => id}
+                    />
                 </View>
 
                 <View style={styles.helpContainer}>
-                    <TouchableOpacity onPress={this._moveCampaignDetail} style={styles.helpLink}>
+                    <TouchableOpacity onPress={() => this._moveCampaignDetail('10ec65d0-7675-11e9-bbcb-5b141185b930')} style={styles.helpLink}>
                         <Text style={styles.helpLinkText}>디테일 페이지 고고쓰</Text>
                     </TouchableOpacity>
                 </View>
@@ -42,8 +67,10 @@ export default class CampaignList extends React.Component {
         </View>
         );
     }
-    _moveCampaignDetail = () => {
-        this.props.navigation.navigate('CampaignDetail');
+    _moveCampaignDetail = campaignId => {
+        this.props.navigation.navigate('CampaignDetail', {
+            campaignId: campaignId
+        });
     };
 }
 

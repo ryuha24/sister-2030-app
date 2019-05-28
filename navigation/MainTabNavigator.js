@@ -17,8 +17,22 @@ const headerHeight = window.height/11;
 
 const CampaignsStack = createStackNavigator(
   {
-    CampaignList: CampaignListScreen,
-    CampaignDetail: CampaignDetailScreen,
+    CampaignList:{
+      screen: CampaignListScreen,
+      navigationOptions: {
+        header: null,
+      }
+    },
+    CampaignDetail: {
+      screen: CampaignDetailScreen,
+      navigatorStyle: {
+        navBarHidden: false,
+      },
+      navigationOptions: {
+        title:'상세보기',
+        headerTintColor:'#000'
+      }
+    },
 
   },
   {

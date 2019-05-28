@@ -86,22 +86,32 @@ export class ReviewList extends React.Component {
         return (
         <View style={styles.container}>
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+                <View style={{flex:1, flexDirection: 'column',paddingLeft: 10,paddingRight: 10,}}>
                 {
                     this.state.applicationList.length>0 ? (
                         this.state.applicationList.map((application,index) => {
                             return (
-                            <TouchableOpacity key={index} onPress={()=>this._moveReviewDetail(application.APPLICATION_ID)} style={styles.itemBtn}>
-                                <View style={styles.itemBox}>
-                                    <Text>{application.CAMPAIGN.CAMPAIGN_TITLE}</Text>
-                                </View>
-                            </TouchableOpacity>
+                                <TouchableOpacity key={index} onPress={()=>this._moveReviewDetail(application.APPLICATION_ID)} style={styles.itemBtn}>
+                                    <View style={{paddingTop:5,paddingBottom: 5,borderRadius:6}}>
+                                        <ImageBackground
+                                            source={{uri: 'https://instagram.ficn2-1.fna.fbcdn.net/vp/f54eadce17f495e92c8fad5360f58098/5D655586/t51.2885-19/s150x150/11821094_185810741751051_1102813722_a.jpg?_nc_ht=instagram.ficn2-1.fna.fbcdn.net'}}
+                                            style={styles.backgroundImage}
+                                            imageStyle={{ borderRadius: 6 }}
+                                        >
+                                            <Text style={styles.reviewTitle}>{application.CAMPAIGN.CAMPAIGN_TITLE}</Text>
+                                            <Text style={styles.reviewSubTitle}>서브 제목이 나옴</Text>
+                                            <Text style={styles.reviewEndDate}>마감 2019.06.01</Text>
+                                            <View style={styles.blackBg}></View>
+                                        </ImageBackground>
+                                    </View>
+                                </TouchableOpacity>
                             )
                         })
                     ) : (
                         <Text>아직 지원 내역이 없습니당:)</Text>
                     )
                 }
-
+                </View>
             </ScrollView>
         </View>
         );
@@ -200,6 +210,49 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#2e78b7',
     },
+    itemBtn: {
+        position:'relative',
+        borderRadius:6,
+    },
+    backgroundImage: {
+        flex: 1,
+        width:'100%',
+        height:200,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    blackBg: {
+        position:'absolute',
+        top:0,
+        left:0,
+        width:'100%',
+        height:'100%',
+        backgroundColor: 'rgba(0,0,0,0.2)',
+        borderRadius:6,
+    },
+    reviewTitle: {
+        color:'#fff',
+        fontSize:20,
+        fontWeight: 'bold',
+        position: 'relative',
+        zIndex: 9999,
+        marginBottom:6,
+    },
+    reviewSubTitle: {
+        color:'#fff',
+        fontSize:16,
+        position:'relative',
+        zIndex: 9999,
+        marginBottom:10,
+    },
+    reviewEndDate: {
+        marginTop:10,
+        color:'#fff',
+        fontSize:16,
+        fontWeight:'bold',
+        position:'relative',
+        zIndex: 9999,
+    }
 });
 
 function mapStateToProps (state) {

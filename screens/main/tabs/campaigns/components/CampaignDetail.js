@@ -1,15 +1,13 @@
 import React from 'react';
 import {
     Image,
-    Platform,
     ScrollView,
     StyleSheet,
     Text,
-    TouchableOpacity,
     TouchableHighlight,
     View,
-    Modal, ImageBackground,
-    WebView
+    Modal,
+    Dimensions,
 } from 'react-native';
 import {connect} from "react-redux";
 import dateFormat from 'dateformat';
@@ -59,6 +57,7 @@ export class CampaignDetail extends React.Component {
     setModalVisible(visible) {
         this.setState({modalVisible: visible});
     }
+    // 개가튼거 !!!! 아이콘 이동 =
     _moveCampaignList = () => this.props.navigation.navigate('CampaignDetail');
 
     render() {
@@ -117,7 +116,11 @@ export class CampaignDetail extends React.Component {
                     <View style={styles.viewContent}>
                         <View style={styles.viewContentWrap}>
                             <Text style={styles.viewContentTitle}>상세내용</Text>
-                            <WebView source={{html: this.state.campaign.description}} />
+                            <Image
+                                source={{uri:'https://s3.ap-northeast-2.amazonaws.com/www.2030sisters.com/campaigns/descriptionImage/test.jpeg'}}
+                                resizeMode={'contain'}
+                                style={styles.images}
+                            />
                         </View>
                         <View style={styles.viewContentWrap}>
                             <Text style={styles.viewContentTitle}>유의사항</Text>
@@ -147,7 +150,7 @@ export class CampaignDetail extends React.Component {
         );
     }
 }
-
+const win = Dimensions.get('window');
 const styles = StyleSheet.create({
     wrap: {
         flex:1,
@@ -231,6 +234,12 @@ const styles = StyleSheet.create({
         alignItems: undefined,
         justifyContent: undefined,
     },
+    images: {
+        flex: 1,
+        alignSelf: 'stretch',
+        width: '100%',
+        height: 2150,
+    }
 });
 
 function mapStateToProps (state) {

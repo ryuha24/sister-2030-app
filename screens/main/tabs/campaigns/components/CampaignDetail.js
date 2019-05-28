@@ -22,7 +22,7 @@ export default class CampaignDetail extends React.Component {
     }
 
     componentDidMount(){
-        return fetch('http://192.168.219.102:3000/campaign/campaignViews/'+this.props.navigation.getParam('campaignId'))
+        return fetch('http://52.79.228.214:3000/campaign/campaignViews/'+this.props.navigation.getParam('campaignId'))
         .then((response) => response.json())
         .then((responseJson) => {
             console.log(responseJson);

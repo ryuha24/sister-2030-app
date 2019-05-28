@@ -55,13 +55,16 @@ const CampaignsStack = createStackNavigator(
 
 CampaignsStack.navigationOptions = {
   tabBarLabel: '캠페인',
+  tabBarOptions: {
+    activeTintColor:'#ed3847',
+  },
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+          ? 'ios-home'
+          : 'md-home'
       }
     />
   ),
@@ -107,10 +110,13 @@ const ReviewsStack = createStackNavigator(
 
 ReviewsStack.navigationOptions = {
   tabBarLabel: '리뷰',
+  tabBarOptions: {
+    activeTintColor:'#ed3847',
+  },
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      name={Platform.OS === 'ios' ? 'ios-brush' : 'md-brush'}
     />
   ),
 };
@@ -155,6 +161,9 @@ const SettingsStack = createStackNavigator(
 
 SettingsStack.navigationOptions = {
   tabBarLabel: '더보기',
+  tabBarOptions: {
+    activeTintColor:'#ed3847',
+  },
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}

@@ -11,7 +11,7 @@ import {
     Modal, ImageBackground
 } from 'react-native';
 import dateFormat from 'dateformat';
-
+import LottieView from 'lottie-react-native';
 
 export default class CampaignDetail extends React.Component {
     constructor(props) {
@@ -56,39 +56,36 @@ export default class CampaignDetail extends React.Component {
     setModalVisible(visible) {
         this.setState({modalVisible: visible});
     }
+    _moveCampaignList = () => this.props.navigation.navigate('CampaignDetail');
 
     render() {
         return (
-        <View style={styles.container}>
+        <View style={styles.wrap}>
             <Modal
-            animationType="slide"
-            transparent={false}
+            isVisible={true}
+            animationType="none"
+            transparent={true}
             visible={this.state.modalVisible}
+            style={styles.modal}
+            onBackdropPress={this.onRequestClose}
             onRequestClose={() => {
                 Alert.alert('Modal has been closed.');
             }}>
                 <View style={{flex: 1,
                     flexDirection: 'column',
                     justifyContent: 'center',
-                    alignItems: 'center'}}>
-                    <View
-                        style={{
-                            width: 300,
-                            height: 300
-                        }}
-                    >
-                        <Text>신청쓰!!!!!</Text>
-
-                        <TouchableHighlight
-                        onPress={() => {
-                            this.setModalVisible(!this.state.modalVisible);
-                        }}>
-                            <Text>Hide Modal</Text>
-                        </TouchableHighlight>
-                    </View>
+                    alignItems: 'center',
+                }}>
+                    <LottieView
+                        source={require('../../../../../assets/images/Check_Mark_Success_Data.json')}
+                        autoPlay = {true}
+                        loop = {false}
+                        style={{width:100, height:100,}}
+                        onAnimationFinish = {() => this._moveCampaignList}
+                    />
                 </View>
             </Modal>
-            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} >
                 <View style={{flex: 1, flexDirection: 'column', flexWrap: 'wrap', alignItems: 'flex-start', width:'100%'}}>
                     <View style={styles.viewTop}>
                         <Text style={{fontSize: 21, fontWeight:'bold', marginBottom:5,}}>{this.state.campaign.title}</Text>
@@ -101,12 +98,12 @@ export default class CampaignDetail extends React.Component {
                     </View>
                     <View style={styles.viewInfo}>
                         <View style={{flex:1, flexDirection:'row'}}>
-                            <View style={{flexDirection:'column',width:90, paddingTop:20,}}>
+                            <View style={{flexDirection:'column',width:90, paddingTop:13,}}>
                                 <Text style={styles.viewInfoDate}>리뷰어 모집</Text>
                                 <Text style={styles.viewInfoDate}>리뷰어 선정</Text>
                                 <Text style={styles.viewInfoDate}>리뷰어 마감</Text>
                             </View>
-                            <View style={{flexDirection:'column',width:90, paddingTop:20,}}>
+                            <View style={{flexDirection:'column',width:90, paddingTop:13,}}>
                                 <Text style={styles.viewInfoDate}>{dateFormat(this.state.campaign.startDate, "yyyy-mm-dd")}</Text>
                                 <Text style={styles.viewInfoDate}>{dateFormat(this.state.campaign.selectDate, "yyyy-mm-dd")}</Text>
                                 <Text style={styles.viewInfoDate}>{dateFormat(this.state.campaign.endDate, "yyyy-mm-dd")}</Text>
@@ -133,26 +130,34 @@ export default class CampaignDetail extends React.Component {
                         </View>
                     </View>
                 </View>
-
-                <View style={styles.helpContainer}>
-                    <TouchableHighlight
+            </ScrollView>
+            <View style={styles.helpContainer}>
+                <TouchableHighlight
                     onPress={() => {
                         this.setModalVisible(true);
-                    }}>
-                        <Text style={styles.helpLinkText}>여기 누르면 신청하는거임</Text>
-                    </TouchableHighlight>
-                </View>
-            </ScrollView>
+                    }}
+                    style={styles.itemSubmit}>
+                    <Text style={styles.helpLinkText}>신청하기</Text>
+                </TouchableHighlight>
+            </View>
         </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    wrap: {
+        flex:1,
+    },
     container: {
+        width:'100%',
         flex: 1,
         backgroundColor: '#fff',
-        padding:7,
+        padding:10,
+        paddingBottom:80,
+    },
+    contentContainerStyle: {
+        paddingVertical: 20,
     },
     viewTop: {
         paddingBottom: 25,
@@ -189,7 +194,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     viewInfoDate: {
-        paddingBottom: 5,
+        paddingBottom: 10,
     },
     viewContent: {
         flexDirection: 'column',
@@ -198,17 +203,29 @@ const styles = StyleSheet.create({
     },
     viewContentWrap: {
         flexDirection: 'column',
-        marginBottom: 25,
+        marginBottom: 30,
     },
     viewContentTitle: {
         fontSize:21,
         fontWeight: 'bold',
+        marginBottom: 10,
     },
     helpContainer: {
         width:'100%',
-        position:'absolute',
-        left:0,
-        bottom:0,
+        backgroundColor:'#ed3847',
+    },
+    itemSubmit:{
         padding:15,
+    },
+    helpLinkText:{
+        textAlign:'center',
+        color:'#fff',
+        fontSize:16,
+    },
+    modal: {
+        backgroundColor: 'white',
+        margin: 0, // This is the important style you need to set
+        alignItems: undefined,
+        justifyContent: undefined,
     },
 });

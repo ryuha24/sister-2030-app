@@ -33,7 +33,8 @@ export default class Setting extends React.Component {
             <Text style={{marginLeft: 10, fontSize: 24, fontWeight: 'bold'}}>더보기</Text>
             ),
             headerRight: (
-            <TouchableOpacity onPress={() => navigation.navigate('MyPage')} style={{
+            // onPress={()=>navigation.navigate('MyPage')}
+            <TouchableOpacity style={{
                 right: Platform.OS === 'ios' ? Dimensions.get("window").height < 667 ? '10%' : '5%' : '25%',
                 backgroundColor: 'transparent',
                 paddingLeft: 15,

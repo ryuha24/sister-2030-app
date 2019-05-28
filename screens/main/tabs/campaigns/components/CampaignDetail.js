@@ -9,8 +9,10 @@ import {
     TouchableHighlight,
     View,
     Modal, ImageBackground,
-    WebView
+    WebView,
+    RefreshControl
 } from 'react-native';
+import axios from 'axios';
 import {connect} from "react-redux";
 import dateFormat from 'dateformat';
 import LottieView from 'lottie-react-native';
@@ -19,9 +21,11 @@ export class CampaignDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            refreshing: false,
             userInfo: props.userData.user,
             modalVisible: false,
             campaign: {},
+            appliedYN: "",
             category: {
                 product: "제품",
                 consumer: "체험단",
@@ -38,13 +42,14 @@ export class CampaignDetail extends React.Component {
             }
         }
     }
-
-    componentDidMount(){
-        return fetch('http://52.79.228.214:3000/campaign/campaignViews/'+this.props.navigation.getParam('campaignId'))
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+        fetch('http://52.79.228.214:3000/campaign/campaignViews/'+this.props.navigation.getParam('campaignId'))
         .then((response) => response.json())
         .then((responseJson) => {
             console.log(responseJson);
             this.setState({
+                refreshing: false,
                 campaign: responseJson
             }, function(){
 
@@ -56,8 +61,45 @@ export class CampaignDetail extends React.Component {
         });
     }
 
+    componentDidMount(){
+        let _this = this;
+        return fetch('http://52.79.228.214:3000/campaign/campaignViews/'+_this.props.navigation.getParam('campaignId')+'?userId='+_this.state.userInfo.USER_ID)
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson);
+            this.setState({
+                campaign: responseJson.campaign,
+                appliedYN: responseJson.appliedYN
+            }, function(){
+
+            });
+
+        })
+        .catch((error) =>{
+            console.error(error);
+        });
+    }
+
     setModalVisible(visible) {
-        this.setState({modalVisible: visible});
+        let _this = this;
+        _this.setState({modalVisible: visible});
+        axios.post('http://52.79.228.214:3000/apply/campaign/'+this.props.navigation.getParam('campaignId'), {userId: _this.state.userInfo.USER_ID})
+        .then(function(result){
+            let data = result.data;
+            if(data) {
+                setTimeout(function(){
+                    _this.setState({modalVisible: false});
+                    _this.props.navigation.navigate('CampaignList');
+                }, 1000);
+            } else {
+                _this.setState({modalVisible: false});
+                Alert.alert('문제 생김!');
+            }
+        })
+        .catch((error) =>{
+            console.error(error);
+        });
+
     }
     _moveCampaignList = () => this.props.navigation.navigate('CampaignDetail');
 
@@ -88,7 +130,16 @@ export class CampaignDetail extends React.Component {
                     />
                 </View>
             </Modal>
-            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} >
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                refreshControl={
+                    <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._onRefresh}
+                    />
+                }
+            >
                 <View style={{flex: 1, flexDirection: 'column', flexWrap: 'wrap', alignItems: 'flex-start', width:'100%'}}>
                     <View style={styles.viewTop}>
                         <Text style={{fontSize: 21, fontWeight:'bold', marginBottom:5,}}>{this.state.campaign.title}</Text>
@@ -134,15 +185,23 @@ export class CampaignDetail extends React.Component {
                     </View>
                 </View>
             </ScrollView>
-            <View style={styles.helpContainer}>
-                <TouchableHighlight
-                    onPress={() => {
-                        this.setModalVisible(true);
-                    }}
-                    style={styles.itemSubmit}>
-                    <Text style={styles.helpLinkText}>신청하기</Text>
-                </TouchableHighlight>
-            </View>
+            {this.state.appliedYN === "N" ? (
+                <View style={styles.helpContainer}>
+                    <TouchableHighlight
+                        onPress={() => {
+                            this.setModalVisible(true);
+                        }}
+                        style={styles.itemSubmit}>
+                        <Text style={styles.helpLinkText}>신청하기</Text>
+                    </TouchableHighlight>
+                </View>
+            ) : (
+                <View style={styles.helpContainerGrey}>
+                    <View style={styles.itemSubmit}>
+                        <Text style={styles.helpLinkTextGrey}>신청완료</Text>
+                    </View>
+                </View>
+            )}
         </View>
         );
     }
@@ -217,12 +276,21 @@ const styles = StyleSheet.create({
         width:'100%',
         backgroundColor:'#ed3847',
     },
+    helpContainerGrey: {
+        width:'100%',
+        backgroundColor:'#b8b8b8',
+    },
     itemSubmit:{
         padding:15,
     },
     helpLinkText:{
         textAlign:'center',
         color:'#fff',
+        fontSize:16,
+    },
+    helpLinkTextGrey:{
+        textAlign:'center',
+        color:'#4b4b4b',
         fontSize:16,
     },
     modal: {

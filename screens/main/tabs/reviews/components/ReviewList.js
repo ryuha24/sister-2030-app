@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     View,
     Dimensions, ImageBackground,
+    RefreshControl
 } from 'react-native';
 import {connect} from "react-redux";
 
@@ -16,6 +17,7 @@ export class ReviewList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            refreshing: false,
             userInfo: props.userData.user,
             applicationList : [],
             category: {
@@ -34,14 +36,27 @@ export class ReviewList extends React.Component {
             }
         }
     }
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+        let _this = this;
+        fetch('http://52.79.228.214:3000/users/applications/list/'+_this.state.userInfo.USER_ID)
+        .then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                refreshing: false,
+                applicationList: responseJson.data
+            }, function(){
+
+            });
+
+        })
+    };
     componentDidMount(){
         let _this = this;
         return fetch('http://52.79.228.214:3000/users/applications/list/'+_this.state.userInfo.USER_ID)
         .then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson.data);
             this.setState({
-                isLoading: false,
                 applicationList: responseJson.data
             }, function(){
 
@@ -69,7 +84,8 @@ export class ReviewList extends React.Component {
             <Text style={{marginLeft: 10, fontSize: 24, fontWeight: 'bold'}}>리뷰</Text>
             ),
             headerRight: (
-            <TouchableOpacity onPress={()=>navigation.navigate('MyPage')} style={{
+            // onPress={()=>navigation.navigate('MyPage')}
+            <TouchableOpacity style={{
                 right: Platform.OS === 'ios' ? Dimensions.get("window").height < 667 ? '10%' : '5%' : '25%',
                 backgroundColor: 'transparent',
                 paddingLeft: 15,
@@ -85,7 +101,16 @@ export class ReviewList extends React.Component {
     render() {
         return (
         <View style={styles.container}>
-            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                refreshControl={
+                    <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._onRefresh}
+                    />
+                }
+            >
                 {
                     this.state.applicationList.length>0 ? (
                         this.state.applicationList.map((application,index) => {

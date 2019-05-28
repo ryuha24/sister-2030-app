@@ -45,7 +45,6 @@ export class CampaignDetail extends React.Component {
         fetch('http://52.79.228.214:3000/campaign/campaignViews/'+this.props.navigation.getParam('campaignId'))
         .then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson);
             this.setState({
                 refreshing: false,
                 campaign: responseJson
@@ -64,7 +63,6 @@ export class CampaignDetail extends React.Component {
         return fetch('http://52.79.228.214:3000/campaign/campaignViews/'+_this.props.navigation.getParam('campaignId')+'?userId='+_this.state.userInfo.USER_ID)
         .then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson);
             this.setState({
                 campaign: responseJson.campaign,
                 appliedYN: responseJson.appliedYN

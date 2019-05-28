@@ -11,7 +11,6 @@ export class Loading extends React.Component {
 
     _bootstrapAsync = async () => {
         const userId = await AsyncStorage.getItem('user_id');
-        console.log("loading", userId);
 
         // This will switch to the App screen or Auth screen and this loading
         // screen will be unmounted and thrown away.

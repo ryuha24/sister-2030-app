@@ -11,6 +11,7 @@ import {
     RefreshControl
 } from 'react-native';
 import {connect} from "react-redux";
+import dateFormat from "dateformat";
 
 
 export class ReviewList extends React.Component {
@@ -120,13 +121,14 @@ export class ReviewList extends React.Component {
                                 <TouchableOpacity key={index} onPress={()=>this._moveReviewDetail(application.APPLICATION_ID)} style={styles.itemBtn}>
                                     <View style={{paddingTop:5,paddingBottom: 5,borderRadius:6}}>
                                         <ImageBackground
-                                            source={{uri: 'https://instagram.ficn2-1.fna.fbcdn.net/vp/f54eadce17f495e92c8fad5360f58098/5D655586/t51.2885-19/s150x150/11821094_185810741751051_1102813722_a.jpg?_nc_ht=instagram.ficn2-1.fna.fbcdn.net'}}
+                                            source={{uri: application.CAMPAIGN.CAMPAIGN_THUMB_IMAGE}}
                                             style={styles.backgroundImage}
                                             imageStyle={{ borderRadius: 6 }}
                                         >
                                             <Text style={styles.reviewTitle}>{application.CAMPAIGN.CAMPAIGN_TITLE}</Text>
-                                            <Text style={styles.reviewSubTitle}>서브 제목이 나옴</Text>
-                                            <Text style={styles.reviewEndDate}>마감 2019.06.01</Text>
+                                            <Text style={styles.reviewSubTitle}>{application.CAMPAIGN.CAMPAIGN_SUB_TITLE}</Text>
+                                            <Text style={styles.reviewEndDate}>마감 {dateFormat(application.CAMPAIGN.CAMPAIGN_ED_DT, "yyyy-mm-dd")}</Text>
+                                            <Text style={styles.reviewEndDate}>리뷰 {application.APPLICATION_RESULT ? '달았어염!' : '달아주세염!'}</Text>
                                             <View style={styles.blackBg}></View>
                                         </ImageBackground>
                                     </View>

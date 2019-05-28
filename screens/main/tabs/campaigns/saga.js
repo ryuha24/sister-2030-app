@@ -31,12 +31,10 @@ function navigateToInstaCheck(navigation) {
 function* crawlingInstagram(action) {
     try {
         let instagramInfo = yield call(api, 'GET', '/users/crawling/'+action.instaId, {});
-        console.log("Saga", instagramInfo);
         const data = {
             instagram: yield put(updateData(instagramInfo)),
             signUpInfo: action
         };
-        console.log("saga/ Data",data);
         yield put(updateData(data));
         yield call(navigateToInstaCheck, action.navigation);
         yield put(crawlingInfoSuccess());

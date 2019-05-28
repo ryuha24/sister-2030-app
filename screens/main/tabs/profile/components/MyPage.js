@@ -25,7 +25,6 @@ export class MyPage extends React.Component {
         return fetch('http://52.79.228.214:3000/users/mypage/'+_this.state.userInfo.USER_ID)
         .then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson);
             this.setState({
                 user: responseJson
             }, function(){

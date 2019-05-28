@@ -70,7 +70,6 @@ function* login(action) {
 
 function* getProfile(action) {
     try {
-        console.log("getProfile saga", action);
         let userInfo = yield call(api, 'GET', '/users/mypage/'+action.id, {});
         const data = yield all({
             user: call(api, 'GET', '/users/mypage/'+action.id, {}), //instagramId, follower, following, applicationInfo

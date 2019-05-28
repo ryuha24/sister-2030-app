@@ -15,7 +15,8 @@ import {
 } from 'react-native';
 import dateFormat from 'dateformat';
 import {connect} from "react-redux";
-
+import axios from "axios";
+import LottieView from "lottie-react-native";
 
 export class ReviewDetail extends React.Component {
     constructor(props) {
@@ -27,6 +28,7 @@ export class ReviewDetail extends React.Component {
             application: {
                 CAMPAIGN: {}
             },
+            hashtag: "",
             category: {
                 product: "제품",
                 consumer: "체험단",
@@ -41,6 +43,8 @@ export class ReviewDetail extends React.Component {
                 review: "리뷰중",
                 dontuser: "미달"
             },
+            resultUrl: "",
+            endYN: false,
             clipboardContent: null,
         }
     }
@@ -49,18 +53,26 @@ export class ReviewDetail extends React.Component {
         fetch('http://52.79.228.214:3000/users/applied/'+this.props.navigation.getParam('applicationId'))
         .then((response) => response.json())
         .then((responseJson) => {
+            let today = (new Date()).getTime();
+            let endDate = new Date(responseJson.data.CAMPAIGN.CAMPAIGN_ED_DT).getTime();
+            let YN = today >= endDate;
+            let hashtags = responseJson.data.CAMPAIGN.CAMPAIGN_HASH_TAG.split(',');
+            let hashtagWithHash = hashtags.map(hashtag => {
+                return ('#'+hashtag);
+            });
             this.setState({
                 refreshing: false,
-                application: responseJson.data
+                application: responseJson.data,
+                hashtag: hashtagWithHash.toString(),
+                endYN: YN
             }, function(){
 
             });
-
         })
         .catch((error) =>{
             console.error(error);
         });
-    }
+    };
 
     readFromClipboard = async () => {
         const clipboardContent = await Clipboard.getString();
@@ -76,12 +88,20 @@ export class ReviewDetail extends React.Component {
         return fetch('http://52.79.228.214:3000/users/applied/'+this.props.navigation.getParam('applicationId'))
         .then((response) => response.json())
         .then((responseJson) => {
+            let today = (new Date()).getTime();
+            let endDate = new Date(responseJson.data.CAMPAIGN.CAMPAIGN_ED_DT).getTime();
+            let YN = today >= endDate;
+            let hashtags = responseJson.data.CAMPAIGN.CAMPAIGN_HASH_TAG.split(',');
+            let hashtagWithHash = hashtags.map(hashtag => {
+                return ('#'+hashtag);
+            });
             this.setState({
-                application: responseJson.data
+                application: responseJson.data,
+                hashtag: hashtagWithHash.toString(),
+                endYN: YN
             }, function(){
 
             });
-
         })
         .catch((error) =>{
             console.error(error);
@@ -89,38 +109,59 @@ export class ReviewDetail extends React.Component {
     }
 
     setModalVisible(visible) {
-        this.setState({modalVisible: visible});
+        let _this = this;
+        _this.setState({modalVisible: visible});
+        let data = {
+            applicationId: _this.state.application.APPLICATION_ID,
+            result: _this.state.resultUrl ? _this.state.resultUrl : _this.state.application.APPLICATION_RESULT
+        };
+        axios.post('http://52.79.228.214:3000/apply/submit/result',data)
+        .then(function(result){
+            let data = result.data;
+            if(data) {
+                setTimeout(function(){
+                    _this.setState({modalVisible: false});
+                    _this.props.navigation.navigate('ReviewList');
+                }, 1000);
+            } else {
+                _this.setState({modalVisible: false});
+                Alert.alert('문제 생김!');
+            }
+        })
+        .catch((error) =>{
+            console.error(error);
+        });
     }
+
+    handleUrlResult = (text) => {
+        this.setState({resultUrl: text});
+    };
 
     render() {
         return (
         <View style={styles.wrap}>
             <Modal
-            animationType="slide"
-            transparent={false}
+            isVisible={true}
+            animationType="none"
+            transparent={true}
             visible={this.state.modalVisible}
+            style={styles.modal}
+            onBackdropPress={this.onRequestClose}
             onRequestClose={() => {
                 Alert.alert('Modal has been closed.');
             }}>
                 <View style={{flex: 1,
                     flexDirection: 'column',
                     justifyContent: 'center',
-                    alignItems: 'center'}}>
-                    <View
-                        style={{
-                            width: 300,
-                            height: 300
-                        }}
-                    >
-                        <Text>신청쓰!!!!!</Text>
-
-                        <TouchableHighlight
-                        onPress={() => {
-                            this.setModalVisible(!this.state.modalVisible);
-                        }}>
-                            <Text>Hide Modal</Text>
-                        </TouchableHighlight>
-                    </View>
+                    alignItems: 'center',
+                }}>
+                    <LottieView
+                    source={require('../../../../../assets/images/Check_Mark_Success_Data.json')}
+                    autoPlay = {true}
+                    loop = {false}
+                    style={{width:100, height:100,}}
+                    onAnimationFinish = {() => this._moveCampaignList}
+                    />
                 </View>
             </Modal>
             <ScrollView
@@ -138,7 +179,7 @@ export class ReviewDetail extends React.Component {
                         <Text style={{fontSize: 21, fontWeight:'bold', marginBottom:5,}}>{this.state.application.CAMPAIGN.CAMPAIGN_TITLE}</Text>
                         <Text style={{color:'#919191', marginBottom:20,}}>{this.state.application.CAMPAIGN.CAMPAIGN_SUB_TITLE}</Text>
                         <View style={{flexDirection:'row'}}>
-                            <Text style={styles.itemCategory}>마감 {dateFormat(this.state.application.CAMPAIGN.CAMPAIGN_END_DATE, "yyyy-mm-dd")}</Text>
+                            <Text style={styles.itemCategory}>마감 {dateFormat(this.state.application.CAMPAIGN.CAMPAIGN_ED_DT, "yyyy-mm-dd")}</Text>
                             <Text style={styles.point}>{this.state.application.CAMPAIGN.CAMPAIGN_POINT}</Text>
                             <Image style={styles.itemIcon} source={require('../../../../../assets/images/micon.png')} />
                         </View>
@@ -154,7 +195,7 @@ export class ReviewDetail extends React.Component {
                             <TextInput
                                 style={styles.textInput}
                                 onChangeText={text => this.setState({ text })}
-                                value={'#해시태그 #타기타기 #테테'}
+                                value={this.state.hashtag}
                                 placeholder=""
                             />
                         </View>
@@ -164,19 +205,36 @@ export class ReviewDetail extends React.Component {
                             <Text style={styles.RDTitle}>가이드</Text>
                         </View>
                         <View>
-                            <Text>가이드가 쭈르르르륵 나옵니다.</Text>
+                            <Text>{this.state.application.CAMPAIGN.CAMPAIGN_GUIDE}</Text>
                         </View>
                     </View>
-                    <View style={styles.viewTop}>
-                        <Text style={styles.RDTitle}>인스타 게시물 URL</Text>
-                        <TextInput style={{width:'100%',fontSize:15, borderWidth:1, borderColor:'#ebebeb',padding:15,}} placeholder="인스타 게시글 URL주소를 넣어주세요."/>
-                        <TouchableHighlight
-                            onPress={() => {
-                                this.setModalVisible(true);
-                            }}>
-                            <Text style={styles.submitBtn}>리뷰 등록</Text>
-                        </TouchableHighlight>
-                    </View>
+                    {this.state.endYN ? (
+                        <View style={styles.viewTop}>
+                            <Text style={styles.RDTitle}>인스타 게시물 URL</Text>
+                            <Text style={{width:'100%',fontSize:15, borderWidth:1, borderColor:'#ebebeb',padding:15,}}>
+                                {this.state.application.APPLICATION_RESULT}
+                            </Text>
+                            <View style={{backgroundColor: "#b8b8b8"}}>
+                                <Text style={styles.submitBtnGrey}>캠페인 끝</Text>
+                            </View>
+                        </View>
+                    ) : (
+                        <View style={styles.viewTop}>
+                            <Text style={styles.RDTitle}>인스타 게시물 URL</Text>
+                            <TextInput
+                                style={{width:'100%',fontSize:15, borderWidth:1, borderColor:'#ebebeb',padding:15,}}
+                                placeholder="인스타 게시글 URL주소를 넣어주세요."
+                                value={this.state.application.APPLICATION_RESULT}
+                                onChangeText = {this.handleUrlResult}
+                            />
+                            <TouchableHighlight
+                                onPress={() => {
+                                    this.setModalVisible(true);
+                                }}>
+                                <Text style={styles.submitBtn}>리뷰 등록</Text>
+                            </TouchableHighlight>
+                        </View>
+                    )}
                 </View>
             </ScrollView>
         </View>
@@ -274,6 +332,14 @@ const styles = StyleSheet.create({
         padding:15,
         backgroundColor:'#ed3847',
         color:'#fff',
+        textAlign:'center',
+    },
+    submitBtnGrey: {
+        fontSize:18,
+        fontWeight:'bold',
+        padding:15,
+        backgroundColor:'#b8b8b8',
+        color:'#4b4b4b',
         textAlign:'center',
     },
 });

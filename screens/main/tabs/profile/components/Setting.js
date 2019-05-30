@@ -7,15 +7,37 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Dimensions
+    Dimensions,
+    AsyncStorage
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import {logout} from "../../../../account/action";
+import {connect} from "react-redux";
 
 
-export default class Setting extends React.Component {
+export class Setting extends React.Component {
     constructor(props) {
         super(props);
     }
+    async _logout(navigation) {
+        let _this = this;
+        try {
+            await AsyncStorage.removeItem('user_id');
+            fetch('http://52.79.228.214:3000/users/logout')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if(responseJson) {
+                    navigation.navigate('Loading');
+                }
+            })
+            .catch((error) =>{
+                console.error(error);
+            });
+        } catch (error) {
+            console.log("logout err");
+        }
+    }
+
     static navigationOptions = ({ navigation }) => {
         return {
             headerStyle: {
@@ -76,10 +98,10 @@ export default class Setting extends React.Component {
                             <Ionicons name="md-laptop" size={24} color="#454545" />
                             <Text style={styles.iconTitle}>1:1문의</Text>
                         </View>
-                        <View style={{flex: 1, height: 100, borderWidth: 0.5, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
+                        <TouchableOpacity onPress={() => this._logout(this.props.navigation)} style={{flex: 1, height: 100, borderWidth: 0.5, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
                             <Ionicons name="md-log-out" size={24} color="#454545" />
                             <Text style={styles.iconTitle}>로그아웃</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={{flex:1,alignItems: "center", marginTop:30,}}>
@@ -195,3 +217,17 @@ const styles = StyleSheet.create({
         paddingRight:10,
     }
 });
+
+
+function mapStateToProps (state) {
+    return {
+        screenData: state
+    }
+}
+
+function mapDispatchToProps (dispatch) {
+    return {
+        logout: (navigation) => dispatch(logout(navigation))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Setting);

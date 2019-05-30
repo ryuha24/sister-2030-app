@@ -28,7 +28,7 @@ async function get (route, args) {
             }
             );
             let responseJson = await response.json();
-            if (route === '/users/logout' && responseJson.status === 200) {
+            if (route === '/users/logout' && responseJson.status) {
                 // expo secure 제거
                 await AsyncStorage.removeItem('user_id');
             }

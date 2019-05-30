@@ -34,6 +34,11 @@ export const signUpFailure = () => ({
     type: 'SIGN_UP_FAILURE'
 });
 
+export const logout = (navigation) =>({
+    type: 'LOGOUT',
+    navigation: navigation
+});
+
 export const login = (email, password, navigation) => ({
     type: 'LOGIN',
     email: email,

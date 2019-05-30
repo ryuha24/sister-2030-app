@@ -50,28 +50,7 @@ export class ReviewDetail extends React.Component {
     }
     _onRefresh = () => {
         this.setState({refreshing: true});
-        fetch('http://52.79.228.214:3000/users/applied/'+this.props.navigation.getParam('applicationId'))
-        .then((response) => response.json())
-        .then((responseJson) => {
-            let today = (new Date()).getTime();
-            let endDate = new Date(responseJson.data.CAMPAIGN.CAMPAIGN_ED_DT).getTime();
-            let YN = today >= endDate;
-            let hashtags = responseJson.data.CAMPAIGN.CAMPAIGN_HASH_TAG.split(',');
-            let hashtagWithHash = hashtags.map(hashtag => {
-                return ('#'+hashtag);
-            });
-            this.setState({
-                refreshing: false,
-                application: responseJson.data,
-                hashtag: hashtagWithHash.toString(),
-                endYN: YN
-            }, function(){
-
-            });
-        })
-        .catch((error) =>{
-            console.error(error);
-        });
+        c
     };
 
     readFromClipboard = async () => {

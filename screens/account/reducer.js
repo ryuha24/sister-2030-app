@@ -44,6 +44,13 @@ export default function accountReducer (state = initialState.account, action) {
                     succeed: false,
                 }
             };
+        case 'LOGOUT':
+            return{
+                ...state,
+                logout: {
+                    succeed: true
+                }
+            };
         case 'LOGIN':
             return {
                 ...state,

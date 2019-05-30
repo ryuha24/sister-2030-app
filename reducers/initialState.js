@@ -20,6 +20,9 @@ const initialState = {
         sign_up: {
             succeed: false
         },
+        logout: {
+            succeed: false
+        },
         instagram: {
             succeed: false,
         },

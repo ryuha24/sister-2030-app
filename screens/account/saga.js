@@ -10,6 +10,10 @@ function navigateToMain(navigation) {
     navigation.dispatch(NavigationActions.navigate({ routeName: 'Main' }));
 }
 
+function navigateToLoading(navigation) {
+    navigation.dispatch(NavigationActions.navigate({ routeName: 'Loading' }));
+}
+
 function navigateToInstagramCheck(navigation) {
     navigation.dispatch(NavigationActions.navigate({ routeName: 'InstagramCheck' }));
 }
@@ -68,6 +72,17 @@ function* login(action) {
     }
 }
 
+function* logoutUser(action) {
+    try {
+        console.log("saga", action);
+        yield call(api, 'GET', '/users/logout');
+        yield call(navigateToLoading, action.navigation);
+    } catch(err) {
+        action.navigation.pop();
+        alert('로그아웃 실패!');
+    }
+}
+
 function* getProfile(action) {
     try {
         let userInfo = yield call(api, 'GET', '/users/mypage/'+action.id, {});
@@ -87,6 +102,7 @@ function* getProfile(action) {
 
 function* accountSaga() {
     yield takeEvery('GET_PROFILE', getProfile);
+    yield takeEvery('LOGOUT', logoutUser);
     yield takeEvery('LOGIN', login);
     yield takeEvery('SIGN_UP', signUp);
     yield takeEvery('CRAWLING', crawlingInstagram);

@@ -20,7 +20,7 @@ export class CampaignDetail extends React.Component {
         super(props);
         this.state = {
             refreshing: false,
-            userInfo: props.userData.user,
+            userInfo: props.userData.userData.user,
             modalVisible: false,
             campaign: {},
             appliedYN: "",
@@ -60,7 +60,7 @@ export class CampaignDetail extends React.Component {
 
     componentDidMount(){
         let _this = this;
-        return fetch('https://sisters2030.herokuapp.com/campaign/campaignViews/'+_this.props.navigation.getParam('campaignId')+'?userId='+_this.state.userInfo.USER_ID)
+        return fetch('https://sisters2030.herokuapp.com/campaign/campaignViews/'+_this.props.navigation.getParam('campaignId')+'?userId='+_this.props.userData.userData.user.USER_ID)
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({
@@ -79,7 +79,7 @@ export class CampaignDetail extends React.Component {
     setModalVisible(visible) {
         let _this = this;
         _this.setState({modalVisible: visible});
-        axios.post('https://sisters2030.herokuapp.com/apply/campaign/'+this.props.navigation.getParam('campaignId'), {userId: _this.state.userInfo.USER_ID})
+        axios.post('https://sisters2030.herokuapp.com/apply/campaign/'+this.props.navigation.getParam('campaignId'), {userId: _this.props.userData.userData.user.USER_ID})
         .then(function(result){
             let data = result.data;
             if(data) {

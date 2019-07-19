@@ -45,6 +45,7 @@ function* signUp(action) {
             instagramId: action.instaId,
             following: action.following,
             follower: action.follower,
+            post: action.post,
             profileUrl: action.profileUrl
         });
         yield put(login(action.email, action.password, action.navigation));

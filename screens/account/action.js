@@ -14,7 +14,7 @@ export const crawlingInfoSuccess = () => ({
 export const crawlingInfoFailure = () => ({
     type: 'CRAWLING_FAILURE'
 });
-export const signUp = (nickname, email, password, instaId, follower, following, profileUrl, navigation) => ({
+export const signUp = (nickname, email, password, instaId, follower, following, post, profileUrl, navigation) => ({
     type: 'SIGN_UP',
     nickname: nickname,
     email: email,
@@ -22,6 +22,7 @@ export const signUp = (nickname, email, password, instaId, follower, following, 
     instaId: instaId,
     follower: follower,
     following: following,
+    post: post,
     profileUrl: profileUrl,
     navigation: navigation
 });

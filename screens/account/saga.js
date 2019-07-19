@@ -1,4 +1,4 @@
-import {loginFailure, loginSuccess, signUpFailure, signUpSuccess, crawlingInfoSuccess, crawlingInfoFailure} from './action';
+import {login, loginFailure, loginSuccess, signUpFailure, signUpSuccess, crawlingInfoSuccess, crawlingInfoFailure} from './action';
 import {all, call, put, takeEvery} from 'redux-saga/effects';
 import {NavigationActions} from 'react-navigation';
 
@@ -22,7 +22,8 @@ function* crawlingInstagram(action) {
     try {
         let instagramInfo = yield call(api, 'GET', '/users/crawling/'+action.instaId, {});
         const data = {
-            instagram: yield put(updateData(instagramInfo)),
+            // instagram: yield put(updateData(instagramInfo)),
+            instagram: instagramInfo,
             signUpInfo: action
         };
         yield put(updateData(data));
@@ -37,7 +38,7 @@ function* crawlingInstagram(action) {
 
 function* signUp(action) {
     try {
-        yield call(api, 'POST', '/users/register', {
+        let signUpUser = yield call(api, 'POST', '/users/register', {
             nickname: action.nickname,
             email: action.email,
             password: action.password,
@@ -46,8 +47,8 @@ function* signUp(action) {
             follower: action.follower,
             profileUrl: action.profileUrl
         });
-        yield call(navigateToMain, action.navigation);
-        yield put(signUpSuccess());
+        yield put(login(action.email, action.password, action.navigation));
+        yield put(signUpSuccess(signUpUser));
     } catch(err) {
         action.navigation.pop();
         yield put(signUpFailure());
@@ -55,7 +56,7 @@ function* signUp(action) {
     }
 }
 
-function* login(action) {
+function* loginUser(action) {
     try {
         let userInfo = yield call(api, 'POST', '/users/login', {email: action.email, password: action.password});
         // const data = yield all({
@@ -103,7 +104,7 @@ function* getProfile(action) {
 function* accountSaga() {
     yield takeEvery('GET_PROFILE', getProfile);
     yield takeEvery('LOGOUT', logoutUser);
-    yield takeEvery('LOGIN', login);
+    yield takeEvery('LOGIN', loginUser);
     yield takeEvery('SIGN_UP', signUp);
     yield takeEvery('CRAWLING', crawlingInstagram);
 }

@@ -11,11 +11,11 @@ export class InstagramCheck extends React.Component {
             email: this.props.screenData.signUpInfo.email,
             password: this.props.screenData.signUpInfo.password,
             nickname: this.props.screenData.signUpInfo.nickname,
-            instagramId: this.props.screenData.instagram.data.instagramId,
-            follower: this.props.screenData.instagram.data.follower,
-            following: this.props.screenData.instagram.data.following,
-            post: this.props.screenData.instagram.data.post,
-            profileUrl: this.props.screenData.instagram.data.profileUrl
+            instagramId: this.props.screenData.instagram.instagramId,
+            follower: this.props.screenData.instagram.follower,
+            following: this.props.screenData.instagram.following,
+            post: this.props.screenData.instagram.post,
+            profileUrl: this.props.screenData.instagram.profileUrl
         }
     }
 
@@ -38,7 +38,7 @@ export class InstagramCheck extends React.Component {
         <ScrollView style={styles.root} contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps='handled'>
             <View style={styles.content}>
                 <ImageBackground source={{uri:this.state.profileUrl}} imageStyle={{borderRadius: 50}} style={styles.profileImg}/>
-                <Text style={styles.instaNick}>ryu_haaa</Text>
+                <Text style={styles.instaNick}>{this.state.instagramId}</Text>
                 <View style={styles.flexView}>
                     <View style={styles.flexViewIn}>
                         <Text style={{textAlign:'center'}}>
@@ -49,13 +49,13 @@ export class InstagramCheck extends React.Component {
                     <View style={styles.flexViewIn}>
                         <Text style={{textAlign:'center'}}>
                             팔로워
-                            <Text style={{fontWeight:'bold'}}>{this.state.follower.trim()}</Text>
+                            <Text style={{fontWeight:'bold'}}>{this.state.follower}</Text>
                         </Text>
                     </View>
                     <View style={styles.flexViewIn}>
                         <Text style={{textAlign:'center'}}>
                             팔로우
-                            <Text style={{fontWeight:'bold'}}>{this.state.following.trim()}</Text>
+                            <Text style={{fontWeight:'bold'}}>{this.state.following}</Text>
                         </Text>
                     </View>
                 </View>
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
     return {
-        screenData: state.data
+        screenData: state.data.userData
     }
 }
 

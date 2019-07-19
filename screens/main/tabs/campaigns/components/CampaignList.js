@@ -37,7 +37,7 @@ export default class CampaignList extends React.Component {
     }
     _onRefresh = () => {
         this.setState({refreshing: true});
-        fetch('http://172.20.10.2:3000/campaign/campaignList')
+        fetch('https://sisters2030.herokuapp.com/campaign/campaignList')
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({
@@ -50,7 +50,7 @@ export default class CampaignList extends React.Component {
         })
     };
     componentDidMount(){
-        return fetch('http://172.20.10.2:3000/campaign/campaignList')
+        return fetch('https://sisters2030.herokuapp.com/campaign/campaignList')
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({

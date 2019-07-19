@@ -26,8 +26,9 @@ export const signUp = (nickname, email, password, instaId, follower, following, 
     navigation: navigation
 });
 
-export const signUpSuccess = () => ({
-    type: 'SIGN_UP_SUCCESS'
+export const signUpSuccess = (signUpUser) => ({
+    type: 'SIGN_UP_SUCCESS',
+    data: signUpUser
 });
 
 export const signUpFailure = () => ({

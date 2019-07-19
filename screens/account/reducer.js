@@ -34,7 +34,10 @@ export default function accountReducer (state = initialState.account, action) {
             return {
                 ...state,
                 signUp: {
-                    succeed: true,
+                    succeed: true
+                },
+                signUpInfo:{
+                    signUpUser: action.data
                 }
             };
         case 'SIGN_UP_FAILURE':

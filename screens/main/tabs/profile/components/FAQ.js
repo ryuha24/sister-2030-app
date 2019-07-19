@@ -1,57 +1,81 @@
 import React from 'react';
 import {
     Image,
-    Platform,
+    Platform, RefreshControl,
     ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
     View,
 } from 'react-native';
-
+import dateFormat from 'dateformat';
 
 export class FAQ extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user:{}
+            refreshing: false,
+            faqs: []
         }
     }
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+        fetch('https://sisters2030.herokuapp.com/notice/api/faq')
+        .then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                refreshing: false,
+                faqs: responseJson
+            }, function(){
+
+            });
+
+        })
+    };
     componentDidMount(){
-        // let _this = this;
-        // return fetch('https://sisters2030.herokuapp.com/users/mypage/'+_this.state.userInfo.USER_ID)
-        // .then((response) => response.json())
-        // .then((responseJson) => {
-        //     this.setState({
-        //         user: responseJson
-        //     }, function(){
-        //
-        //     });
-        //
-        // })
-        // .catch((error) =>{
-        //     console.error(error);
-        // });
+        return fetch('https://sisters2030.herokuapp.com/notice/api/faq')
+        .then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                isLoading: false,
+                faqs: responseJson
+            }, function(){
+
+            });
+
+        })
+        .catch((error) =>{
+            console.error(error);
+        });
     }
-    _moveDetail = () => {
-        this.props.navigation.navigate('NoticeDetail');
+    _moveFaqDetail = faqId => {
+        this.props.navigation.navigate('FaqDetail', {
+            faqId: faqId
+        });
     };
     render() {
         return (
             <View style={styles.container}>
-                <ScrollView style={styles.scrollStyle} contentContainerStyle={styles.contentContainer}>
-                    <TouchableOpacity onPress={this._moveDetail} style={styles.getStartedContainer}>
-                        <Text style={styles.titles}>FAQ로 가봅시다 !!! </Text>
-                        <Text style={styles.dates}>2019-09-09</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this._moveDetail} style={styles.getStartedContainer}>
-                        <Text style={styles.titles}>FAQ로 가봅시다 !!! </Text>
-                        <Text style={styles.dates}>2019-09-09</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this._moveDetail} style={styles.getStartedContainer}>
-                        <Text style={styles.titles}>FAQ로 가봅시다 !!! </Text>
-                        <Text style={styles.dates}>2019-09-09</Text>
-                    </TouchableOpacity>
+                <ScrollView
+                    style={styles.scrollStyle}
+                    contentContainerStyle={styles.contentContainer}
+                    refreshControl={
+                        <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh}
+                        />
+                    }
+                >
+                    {
+                        this.state.faqs.map((faq,index) => {
+                            return (
+                                <TouchableOpacity onPress={()=>this._moveFaqDetail()} style={styles.getStartedContainer}>
+                                    <Text style={styles.titles}>{faq.ADMIN_BOARD_TITLE}</Text>
+                                    <Text style={styles.dates}>{dateFormat(faq.DATA_OCCR, 'yyyy-mm-dd')}</Text>
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
                 </ScrollView>
             </View>
         );

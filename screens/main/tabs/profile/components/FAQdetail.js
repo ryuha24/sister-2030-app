@@ -8,30 +8,45 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-
+import axios from 'axios';
+import dateFormat from 'dateformat';
 
 export class FAQdetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user:{}
+            refreshing: false,
+            faq:{}
         }
     }
+    _onRefresh = () => {
+        let _this = this;
+        this.setState({refreshing: true});
+        axios.get('https://sisters2030.herokuapp.com/notice/api/faq/detail/'+_this.props.navigation.getParam('faqId'))
+        .then(function(result){
+            _this.setState({
+                refreshing: false,
+                faq: result.data
+            });
+        })
+        .catch((error) =>{
+            console.error(error);
+        });
+    };
+
     componentDidMount(){
-        // let _this = this;
-        // return fetch('https://sisters2030.herokuapp.com/users/mypage/'+_this.state.userInfo.USER_ID)
-        // .then((response) => response.json())
-        // .then((responseJson) => {
-        //     this.setState({
-        //         user: responseJson
-        //     }, function(){
-        //
-        //     });
-        //
-        // })
-        // .catch((error) =>{
-        //     console.error(error);
-        // });
+        let _this = this;
+        this.setState({refreshing: true});
+        axios.get('https://sisters2030.herokuapp.com/notice/api/faq/detail/'+_this.props.navigation.getParam('faqId'))
+        .then(function(result){
+            _this.setState({
+                refreshing: false,
+                faq: result.data
+            });
+        })
+        .catch((error) =>{
+            console.error(error);
+        });
     }
 
     render() {
@@ -39,11 +54,11 @@ export class FAQdetail extends React.Component {
             <View style={styles.container}>
                 <ScrollView style={styles.scrollStyle} contentContainerStyle={styles.contentContainer}>
                     <View style={styles.getStartedContainer}>
-                        <Text style={styles.titles}>FAQ로 가봅시다 !!! </Text>
-                        <Text style={styles.dates}>2019-09-09</Text>
+                        <Text style={styles.titles}>{this.state.notice.ADMIN_BOARD_TITLE} </Text>
+                        <Text style={styles.dates}>{dateFormat(this.state.notice.DATA_OCCR, "yyyy-mm-dd")}</Text>
                     </View>
                     <View style={styles.textContent}>
-                        <Text>FAQ 글이 쭈르르르륵 나와야댐</Text>
+                        <Text>{this.state.notice.ADMIN_BOARD_DESCRIPTION}</Text>
                     </View>
 
                 </ScrollView>

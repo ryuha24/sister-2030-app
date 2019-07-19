@@ -27,6 +27,7 @@ export class InstagramCheck extends React.Component {
         this.state.instagramId,
         this.state.follower,
         this.state.following,
+        this.state.post,
         this.state.profileUrl,
         this.props.navigation
         );
@@ -236,8 +237,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
     return {
-        signUp: (nickname, email, password, instaId, follower, following, profileUrl, navigation) =>
-        dispatch(signUp(nickname, email, password, instaId, follower, following, profileUrl, navigation))
+        signUp: (nickname, email, password, instaId, follower, following, post, profileUrl, navigation) =>
+        dispatch(signUp(nickname, email, password, instaId, follower, following, post, profileUrl, navigation))
     }
 }
 

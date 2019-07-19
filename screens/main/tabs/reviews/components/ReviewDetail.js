@@ -23,7 +23,7 @@ export class ReviewDetail extends React.Component {
         super(props);
         this.state = {
             refreshing: false,
-            userInfo: props.userData.user,
+            userInfo: props.userData.userData.user,
             modalVisible: false,
             application: {
                 CAMPAIGN: {}

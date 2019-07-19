@@ -19,7 +19,7 @@ export class ReviewList extends React.Component {
         super(props);
         this.state = {
             refreshing: false,
-            userInfo: props.userData.user,
+            userInfo: props.userData.userData.user,
             applicationList : [],
             category: {
                 product: "제품",
@@ -40,33 +40,27 @@ export class ReviewList extends React.Component {
     _onRefresh = () => {
         this.setState({refreshing: true});
         let _this = this;
-        fetch('https://sisters2030.herokuapp.com/users/applications/list/'+_this.state.userInfo.USER_ID)
-        .then((response) => response.json())
-        .then((responseJson) => {
-            this.setState({
+        fetch('https://sisters2030.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.USER_ID)
+        .then(function(result) {
+            let data = result;
+            console.log(data);
+            _this.setState({
                 refreshing: false,
-                applicationList: responseJson.data
-            }, function(){
-
+                applicationList: data
             });
-
         })
     };
     componentDidMount(){
         let _this = this;
-        return fetch('https://sisters2030.herokuapp.com/users/applications/list/'+_this.state.userInfo.USER_ID)
-        .then((response) => response.json())
-        .then((responseJson) => {
-            this.setState({
-                applicationList: responseJson.data
-            }, function(){
-
+        fetch('https://sisters2030.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.USER_ID)
+        .then(function(result) {
+            let data = result;
+            console.log(data);
+            _this.setState({
+                refreshing: false,
+                applicationList: data
             });
-
         })
-        .catch((error) =>{
-            console.error(error);
-        });
     }
     // static navigationOptions = ({ navigation }) => {
     //     return {

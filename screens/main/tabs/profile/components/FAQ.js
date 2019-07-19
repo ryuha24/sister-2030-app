@@ -49,7 +49,7 @@ export class FAQ extends React.Component {
         });
     }
     _moveFaqDetail = faqId => {
-        this.props.navigation.navigate('FaqDetail', {
+        this.props.navigation.navigate('FAQDetail', {
             faqId: faqId
         });
     };
@@ -69,9 +69,9 @@ export class FAQ extends React.Component {
                     {
                         this.state.faqs.map((faq,index) => {
                             return (
-                                <TouchableOpacity onPress={()=>this._moveFaqDetail()} style={styles.getStartedContainer}>
-                                    <Text style={styles.titles}>{faq.ADMIN_BOARD_TITLE}</Text>
-                                    <Text style={styles.dates}>{dateFormat(faq.DATA_OCCR, 'yyyy-mm-dd')}</Text>
+                                <TouchableOpacity onPress={()=>this._moveFaqDetail(faq.id)} style={styles.getStartedContainer}>
+                                    <Text style={styles.titles}>{faq.title}</Text>
+                                    <Text style={styles.dates}>{dateFormat(faq.date, 'yyyy-mm-dd')}</Text>
                                 </TouchableOpacity>
                             )
                         })

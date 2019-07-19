@@ -70,8 +70,8 @@ export class Notice extends React.Component {
                     this.state.notices.map((notice,index) => {
                         return (
                             <TouchableOpacity onPress={()=>this._moveNoticeDetail(notice.id)} style={styles.getStartedContainer}>
-                                <Text style={styles.titles}>{notice.ADMIN_BOARD_TITLE}</Text>
-                                <Text style={styles.dates}>{dateFormat(notice.DATA_OCCR, 'yyyy-mm-dd')}</Text>
+                                <Text style={styles.titles}>{notice.title}</Text>
+                                <Text style={styles.dates}>{dateFormat(notice.date, 'yyyy-mm-dd')}</Text>
                             </TouchableOpacity>
                         )
                     })

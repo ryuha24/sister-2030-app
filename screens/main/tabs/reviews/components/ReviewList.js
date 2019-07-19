@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {connect} from "react-redux";
 import dateFormat from "dateformat";
+import axios from "axios";
 
 
 export class ReviewList extends React.Component {
@@ -40,26 +41,33 @@ export class ReviewList extends React.Component {
     _onRefresh = () => {
         this.setState({refreshing: true});
         let _this = this;
-        fetch('https://sisters2030.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.USER_ID)
+        axios.get('https://sisters2030.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.USER_ID)
         .then(function(result) {
-            let data = result;
-            console.log(data);
-            _this.setState({
-                refreshing: false,
-                applicationList: data
-            });
+            let data = result.data;
+            let applicationLists = data.data;
+            if(data) {
+                console.log(data);
+                _this.setState({
+                    refreshing: false,
+                    applicationList: applicationLists
+                });
+
+            }
         })
     };
     componentDidMount(){
         let _this = this;
-        fetch('https://sisters2030.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.USER_ID)
+        axios.get('https://sisters2030.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.USER_ID)
         .then(function(result) {
-            let data = result;
-            console.log(data);
-            _this.setState({
-                refreshing: false,
-                applicationList: data
-            });
+            let data = result.data;
+            let applicationLists = data.data;
+            if(data) {
+                _this.setState({
+                    refreshing: false,
+                    applicationList: applicationLists
+                });
+
+            }
         })
     }
     // static navigationOptions = ({ navigation }) => {

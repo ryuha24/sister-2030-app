@@ -9,6 +9,10 @@ import ReviewListScreen from '../screens/main/tabs/reviews/components/ReviewList
 import ReviewDetailScreen from '../screens/main/tabs/reviews/components/ReviewDetail';
 import SettingScreen from '../screens/main/tabs/profile/components/Setting';
 import MyPageScreen from '../screens/main/tabs/profile/components/MyPage';
+import NoticeScreen from '../screens/main/tabs/profile/components/Notice';
+import NoticeDetailScreen from '../screens/main/tabs/profile/components/NoticeDetail';
+import FAQScreen from '../screens/main/tabs/profile/components/FAQ';
+import FAQDetailScreen from '../screens/main/tabs/profile/components/FAQdetail';
 import MainHeader from "../screens/main/components/MainHeader";
 
 const window = Dimensions.get('window');
@@ -198,6 +202,88 @@ const SettingsStack = createStackNavigator(
         headerTintColor:'#000'
       }
     },
+    Notice: {
+      screen: NoticeScreen,
+      navigatorStyle: {
+        navBarHidden: false,
+      },
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: 'transparent',
+          shadowRadius: 0,
+          shadowOffset: {
+            height: 0,
+          },
+          borderBottomWidth: 0,
+          marginTop:15,
+          paddingBottom:15,
+        },
+        title:'notice',
+        headerTintColor:'#000'
+      }
+    },
+    NoticeDetail: {
+      screen: NoticeDetailScreen,
+      navigatorStyle: {
+        navBarHidden: false,
+      },
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: 'transparent',
+          shadowRadius: 0,
+          shadowOffset: {
+            height: 0,
+          },
+          borderBottomWidth: 0,
+          marginTop:15,
+          paddingBottom:15,
+        },
+        headerTintColor:'#000'
+      }
+    },
+    FAQ: {
+      screen: FAQScreen,
+      navigatorStyle: {
+        navBarHidden: false,
+      },
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: 'transparent',
+          shadowRadius: 0,
+          shadowOffset: {
+            height: 0,
+          },
+          borderBottomWidth: 0,
+          marginTop:15,
+          paddingBottom:15,
+        },
+        title:'faq',
+        headerTintColor:'#000'
+      }
+    },
+    FAQDetail: {
+      screen: FAQDetailScreen,
+      navigatorStyle: {
+        navBarHidden: false,
+      },
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: 'transparent',
+          shadowRadius: 0,
+          shadowOffset: {
+            height: 0,
+          },
+          borderBottomWidth: 0,
+          marginTop:15,
+          paddingBottom:15,
+        },
+        headerTintColor:'#000'
+      }
+    },
   },
   {
     initialRouteName: 'Settings',
@@ -222,6 +308,8 @@ SettingsStack.navigationOptions = {
     />
   ),
 };
+
+
 
 export default createBottomTabNavigator({
   CampaignsStack,

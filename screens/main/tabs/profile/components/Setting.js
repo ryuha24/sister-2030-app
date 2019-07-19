@@ -72,25 +72,29 @@ export class Setting extends React.Component {
     //     }
     // };
 
+    _moveDetail = (destination) => {
+        this.props.navigation.navigate(destination);
+    };
+
     render() {
         return (
             <View style={{flex:1, flexDirection: 'column',}}>
                 <View style={{height:300, backgroundColor:'#fff', flexDirection:'column'}}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
-                        <View style={{flex: 1, height: 100, borderWidth: 1, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
+                        <TouchableOpacity onPress={() => this._moveDetail('Notice')} style={{flex: 1, height: 100, borderWidth: 1, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
                             <Ionicons name="md-megaphone" size={24} color="#454545" />
                             <Text style={styles.iconTitle}>공지사항</Text>
-                        </View>
+                        </TouchableOpacity>
                         <View style={{flex: 1, height: 100, borderWidth: 0.5, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
                             <Ionicons name="ios-paper-plane" size={24} color="#454545" />
                             <Text style={styles.iconTitle}>커뮤니티</Text>
                         </View>
                     </View>
                     <View style={{flex: 1, flexDirection: 'row'}}>
-                        <View style={{flex: 1, height: 100, borderWidth: 0.5, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
+                        <TouchableOpacity onPress={() => this._moveDetail('FAQ')}  style={{flex: 1, height: 100, borderWidth: 0.5, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
                             <Ionicons name="md-information-circle-outline" size={24} color="#454545" />
                             <Text style={styles.iconTitle}>FAQ</Text>
-                        </View>
+                        </TouchableOpacity>
                         <View style={{flex: 1, height: 100, borderWidth: 0.5, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
                             <Ionicons name="logo-usd" size={24} color="#454545" />
                             <Text style={styles.iconTitle}>출금신청</Text>

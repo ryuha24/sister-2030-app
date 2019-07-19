@@ -14,7 +14,6 @@ import { Ionicons } from '@expo/vector-icons';
 import {logout} from "../../../../account/action";
 import {connect} from "react-redux";
 
-
 export class Setting extends React.Component {
     constructor(props) {
         super(props);
@@ -23,7 +22,11 @@ export class Setting extends React.Component {
         let _this = this;
         try {
             await AsyncStorage.removeItem('user_id');
-            fetch('http://52.79.228.214:3000/users/logout')
+            await AsyncStorage.removeItem('user_session');
+            await AsyncStorage.removeItem('user_email');
+            await AsyncStorage.removeItem('user_profileUrl');
+
+            fetch('http://172.20.10.2:3000/users/logout')
             .then((response) => response.json())
             .then((responseJson) => {
                 if(responseJson) {
@@ -38,36 +41,36 @@ export class Setting extends React.Component {
         }
     }
 
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerStyle: {
-                backgroundColor: '#fff',
-                shadowColor: 'transparent',
-                shadowRadius: 0,
-                shadowOffset: {
-                    height: 0,
-                },
-                borderBottomWidth: 0,
-                marginTop: 15,
-                paddingBottom: 15,
-            },
-            headerLeft: (
-            <Text style={{marginLeft: 10, fontSize: 24, fontWeight: 'bold'}}>더보기</Text>
-            ),
-            headerRight: (
-            // onPress={()=>navigation.navigate('MyPage')}
-            <TouchableOpacity style={{
-                right: Platform.OS === 'ios' ? Dimensions.get("window").height < 667 ? '10%' : '5%' : '25%',
-                backgroundColor: 'transparent',
-                paddingLeft: 15,
-                marginRight: 10,
-            }}>
-                <Image style={{width: 40, height: 40, borderRadius: 20,}}
-                       source={{uri: 'https://instagram.ficn2-1.fna.fbcdn.net/vp/f54eadce17f495e92c8fad5360f58098/5D655586/t51.2885-19/s150x150/11821094_185810741751051_1102813722_a.jpg?_nc_ht=instagram.ficn2-1.fna.fbcdn.net'}}/>
-            </TouchableOpacity>
-            ),
-        }
-    };
+    // static navigationOptions = ({ navigation }) => {
+    //     return {
+    //         headerStyle: {
+    //             backgroundColor: '#fff',
+    //             shadowColor: 'transparent',
+    //             shadowRadius: 0,
+    //             shadowOffset: {
+    //                 height: 0,
+    //             },
+    //             borderBottomWidth: 0,
+    //             marginTop: 15,
+    //             paddingBottom: 15,
+    //         },
+    //         headerLeft: (
+    //         <Text style={{marginLeft: 10, fontSize: 24, fontWeight: 'bold'}}>더보기</Text>
+    //         ),
+    //         headerRight: (
+    //         // onPress={()=>navigation.navigate('MyPage')}
+    //         <TouchableOpacity style={{
+    //             right: Platform.OS === 'ios' ? Dimensions.get("window").height < 667 ? '10%' : '5%' : '25%',
+    //             backgroundColor: 'transparent',
+    //             paddingLeft: 15,
+    //             marginRight: 10,
+    //         }}>
+    //             {/*<Image style={{width: 40, height: 40, borderRadius: 20,}}*/}
+    //             {/*       source={{uri: this.props.screenData.data.profileUrl}}/>*/}
+    //         </TouchableOpacity>
+    //         ),
+    //     }
+    // };
 
     render() {
         return (

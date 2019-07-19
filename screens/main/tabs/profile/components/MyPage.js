@@ -17,12 +17,12 @@ export class MyPage extends React.Component {
         this.state = {
             user:{},
             modalVisible: false,
-            userInfo: props.userData.user,
+            userInfo: props.userData.user.user,
         }
     }
     componentDidMount(){
         let _this = this;
-        return fetch('http://52.79.228.214:3000/users/mypage/'+_this.state.userInfo.USER_ID)
+        return fetch('http://172.20.10.2:3000/users/mypage/'+_this.state.userInfo.USER_ID)
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({

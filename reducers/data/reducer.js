@@ -3,7 +3,15 @@ import initialState from '../initialState';
 const dataReducer = (state = initialState.data, action) => {
   switch (action.type) {
     case 'UPDATE_DATA':
-      return action.data;
+      return {
+        ...state,
+        user: action.data
+      };
+    case 'UPDATE_USER' :
+      return {
+        ...state,
+        instagram: action.data
+      };
     case 'SET_MAIN_NAVIGATION':
       return {
         ...state,

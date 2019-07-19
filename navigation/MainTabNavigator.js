@@ -17,7 +17,24 @@ const headerHeight = window.height/11;
 const CampaignsStack = createStackNavigator(
   {
     CampaignList:{
-      screen: CampaignListScreen
+      screen: CampaignListScreen,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: 'transparent',
+          shadowRadius: 0,
+          shadowOffset: {
+            height: 0,
+          },
+          borderBottomWidth: 0,
+          marginTop: 15,
+          paddingBottom: 15,
+        },
+        headerLeft: (
+          <Text style={{marginLeft: 10, fontSize: 24, fontWeight: 'bold'}}>셀럽들의 놀이터</Text>
+        ),
+        headerRight: <MainHeader />
+      }
     },
     CampaignDetail: {
       screen: CampaignDetailScreen,
@@ -73,7 +90,24 @@ CampaignsStack.navigationOptions = {
 const ReviewsStack = createStackNavigator(
     {
       ReviewList:{
-        screen: ReviewListScreen
+        screen: ReviewListScreen,
+        navigationOptions: {
+          headerStyle: {
+            backgroundColor: '#fff',
+            shadowColor: 'transparent',
+            shadowRadius: 0,
+            shadowOffset: {
+              height: 0,
+            },
+            borderBottomWidth: 0,
+            marginTop: 15,
+            paddingBottom: 15,
+          },
+          headerLeft: (
+          <Text style={{marginLeft: 10, fontSize: 24, fontWeight: 'bold'}}>리뷰</Text>
+          ),
+          headerRight: <MainHeader />
+        }
       },
       ReviewDetail: {
         screen: ReviewDetailScreen,
@@ -124,7 +158,24 @@ ReviewsStack.navigationOptions = {
 const SettingsStack = createStackNavigator(
   {
     Settings: {
-      screen: SettingScreen
+      screen: SettingScreen,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: 'transparent',
+          shadowRadius: 0,
+          shadowOffset: {
+            height: 0,
+          },
+          borderBottomWidth: 0,
+          marginTop: 15,
+          paddingBottom: 15,
+        },
+        headerLeft: (
+        <Text style={{marginLeft: 10, fontSize: 24, fontWeight: 'bold'}}>더보기</Text>
+        ),
+        headerRight: <MainHeader />
+      }
     },
     MyPage: {
       screen: MyPageScreen,

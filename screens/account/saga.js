@@ -2,7 +2,7 @@ import {loginFailure, loginSuccess, signUpFailure, signUpSuccess, crawlingInfoSu
 import {all, call, put, takeEvery} from 'redux-saga/effects';
 import {NavigationActions} from 'react-navigation';
 
-import {setMainNavigation,updateData} from '../../reducers/data/action';
+import {setMainNavigation,updateData, updateUser} from '../../reducers/data/action';
 
 import api from '../../api/api';
 
@@ -58,11 +58,11 @@ function* signUp(action) {
 function* login(action) {
     try {
         let userInfo = yield call(api, 'POST', '/users/login', {email: action.email, password: action.password});
-        const data = yield all({
-            user: call(api, 'GET', '/users/mypage/'+userInfo.id, {}), //instagramId, follower, following, applicationInfo
-        });
-
-        yield put(updateData(data));
+        // const data = yield all({
+        //     user: call(api, 'GET', '/users/mypage/'+userInfo.id, {}), //instagramId, follower, following, applicationInfo
+        // });
+        //
+        yield put(updateUser(userInfo));
         yield call(navigateToMain, action.navigation);
         yield put(loginSuccess());
     } catch(err) {

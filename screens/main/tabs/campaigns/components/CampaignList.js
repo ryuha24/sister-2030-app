@@ -37,7 +37,7 @@ export default class CampaignList extends React.Component {
     }
     _onRefresh = () => {
         this.setState({refreshing: true});
-        fetch('http://52.79.228.214:3000/campaign/campaignList')
+        fetch('http://172.20.10.2:3000/campaign/campaignList')
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({
@@ -50,7 +50,7 @@ export default class CampaignList extends React.Component {
         })
     };
     componentDidMount(){
-        return fetch('http://52.79.228.214:3000/campaign/campaignList')
+        return fetch('http://172.20.10.2:3000/campaign/campaignList')
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({
@@ -65,37 +65,6 @@ export default class CampaignList extends React.Component {
             console.error(error);
         });
     }
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerStyle: {
-                backgroundColor: '#fff',
-                shadowColor: 'transparent',
-                shadowRadius: 0,
-                shadowOffset: {
-                    height: 0,
-                },
-                borderBottomWidth: 0,
-                marginTop: 15,
-                paddingBottom: 15,
-            },
-            headerLeft: (
-            <Text style={{marginLeft: 10, fontSize: 24, fontWeight: 'bold'}}>셀럽들의 놀이터</Text>
-            ),
-            headerRight: (
-            // onPress={()=>navigation.navigate('MyPage')}
-            <TouchableOpacity style={{
-                right: Platform.OS === 'ios' ? Dimensions.get("window").height < 667 ? '10%' : '5%' : '25%',
-                backgroundColor: 'transparent',
-                paddingLeft: 15,
-                marginRight: 10,
-            }}>
-                <Image style={{width: 40, height: 40, borderRadius: 20,}}
-                       source={{uri: 'https://instagram.ficn2-1.fna.fbcdn.net/vp/f54eadce17f495e92c8fad5360f58098/5D655586/t51.2885-19/s150x150/11821094_185810741751051_1102813722_a.jpg?_nc_ht=instagram.ficn2-1.fna.fbcdn.net'}}/>
-            </TouchableOpacity>
-            ),
-        }
-    };
-
     render() {
         if(this.state.isLoading){
             return(

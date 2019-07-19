@@ -20,7 +20,7 @@ export class CampaignDetail extends React.Component {
         super(props);
         this.state = {
             refreshing: false,
-            userInfo: props.userData.user,
+            userInfo: props.userData.user.user,
             modalVisible: false,
             campaign: {},
             appliedYN: "",
@@ -42,7 +42,7 @@ export class CampaignDetail extends React.Component {
     }
     _onRefresh = () => {
         this.setState({refreshing: true});
-        fetch('http://52.79.228.214:3000/campaign/campaignViews/'+this.props.navigation.getParam('campaignId'))
+        fetch('http://172.20.10.2:3000/campaign/campaignViews/'+this.props.navigation.getParam('campaignId'))
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({
@@ -60,7 +60,7 @@ export class CampaignDetail extends React.Component {
 
     componentDidMount(){
         let _this = this;
-        return fetch('http://52.79.228.214:3000/campaign/campaignViews/'+_this.props.navigation.getParam('campaignId')+'?userId='+_this.state.userInfo.USER_ID)
+        return fetch('http://172.20.10.2:3000/campaign/campaignViews/'+_this.props.navigation.getParam('campaignId')+'?userId='+_this.state.userInfo.USER_ID)
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({
@@ -79,7 +79,7 @@ export class CampaignDetail extends React.Component {
     setModalVisible(visible) {
         let _this = this;
         _this.setState({modalVisible: visible});
-        axios.post('http://52.79.228.214:3000/apply/campaign/'+this.props.navigation.getParam('campaignId'), {userId: _this.state.userInfo.USER_ID})
+        axios.post('http://172.20.10.2:3000/apply/campaign/'+this.props.navigation.getParam('campaignId'), {userId: _this.state.userInfo.USER_ID})
         .then(function(result){
             let data = result.data;
             if(data) {

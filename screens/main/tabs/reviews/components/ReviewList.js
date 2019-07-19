@@ -19,7 +19,7 @@ export class ReviewList extends React.Component {
         super(props);
         this.state = {
             refreshing: false,
-            userInfo: props.userData.user.user,
+            userInfo: props.userData.user,
             applicationList : [],
             category: {
                 product: "제품",
@@ -40,7 +40,7 @@ export class ReviewList extends React.Component {
     _onRefresh = () => {
         this.setState({refreshing: true});
         let _this = this;
-        fetch('http://172.20.10.2:3000/users/applications/list/'+_this.state.userInfo.USER_ID)
+        fetch('https://sisters2030.herokuapp.com/users/applications/list/'+_this.state.userInfo.USER_ID)
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({
@@ -54,7 +54,7 @@ export class ReviewList extends React.Component {
     };
     componentDidMount(){
         let _this = this;
-        return fetch('http://172.20.10.2:3000/users/applications/list/'+_this.state.userInfo.USER_ID)
+        return fetch('https://sisters2030.herokuapp.com/users/applications/list/'+_this.state.userInfo.USER_ID)
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({

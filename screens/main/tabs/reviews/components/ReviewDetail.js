@@ -23,7 +23,7 @@ export class ReviewDetail extends React.Component {
         super(props);
         this.state = {
             refreshing: false,
-            userInfo: props.userData.user.user,
+            userInfo: props.userData.user,
             modalVisible: false,
             application: {
                 CAMPAIGN: {}
@@ -64,7 +64,7 @@ export class ReviewDetail extends React.Component {
     };
 
     componentDidMount(){
-        return fetch('http://172.20.10.2:3000/users/applied/'+this.props.navigation.getParam('applicationId'))
+        return fetch('https://sisters2030.herokuapp.com/users/applied/'+this.props.navigation.getParam('applicationId'))
         .then((response) => response.json())
         .then((responseJson) => {
             let today = (new Date()).getTime();
@@ -94,7 +94,7 @@ export class ReviewDetail extends React.Component {
             applicationId: _this.state.application.APPLICATION_ID,
             result: _this.state.resultUrl ? _this.state.resultUrl : _this.state.application.APPLICATION_RESULT
         };
-        axios.post('http://172.20.10.2:3000/apply/submit/result',data)
+        axios.post('https://sisters2030.herokuapp.com/apply/submit/result',data)
         .then(function(result){
             let data = result.data;
             if(data) {

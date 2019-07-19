@@ -18,7 +18,7 @@ export class MainHeader extends React.Component {
                 marginRight: 10,
             }}>
                 <Image style={{width: 40, height: 40, borderRadius: 20,}}
-                       source={{uri: this.props.profile.instagram.profileUrl ? this.props.profile.instagram.profileUrl : this.props.profile.user.user.USER_PROFILE_URL}}/>
+                       source={{uri: this.props.profile.user.profileUrl? this.props.profile.user.profileUrl : this.props.profile.userData.user.USER_PROFILE_URL}}/>
             </TouchableOpacity>
         );
     }
@@ -26,7 +26,7 @@ export class MainHeader extends React.Component {
 
 
 function mapStateToProps (state) {
-    console.log(state);
+    console.log("main header",state.data);
     return {
         profile: state.data
     }

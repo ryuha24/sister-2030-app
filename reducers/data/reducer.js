@@ -5,12 +5,12 @@ const dataReducer = (state = initialState.data, action) => {
     case 'UPDATE_DATA':
       return {
         ...state,
-        user: action.data
+        userData: action.data
       };
     case 'UPDATE_USER' :
       return {
         ...state,
-        instagram: action.data
+        user: action.data
       };
     case 'SET_MAIN_NAVIGATION':
       return {

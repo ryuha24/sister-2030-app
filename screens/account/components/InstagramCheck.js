@@ -11,7 +11,7 @@ export class InstagramCheck extends React.Component {
             email: this.props.screenData.signUpInfo.email,
             password: this.props.screenData.signUpInfo.password,
             nickname: this.props.screenData.signUpInfo.nickname,
-            instagramId: this.props.screenData.instagram.data.instagramId,
+            instagramId: this.props.screenData.instagram.data.instaId,
             follower: this.props.screenData.instagram.data.follower,
             following: this.props.screenData.instagram.data.following,
             post: this.props.screenData.instagram.data.post,

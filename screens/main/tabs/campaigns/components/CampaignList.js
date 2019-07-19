@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     itemBtn: {
-        width:'50%',
+        width:'100%',
         height: 290,
         padding:0,
         margin:0,

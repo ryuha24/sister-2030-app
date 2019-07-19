@@ -219,7 +219,7 @@ const SettingsStack = createStackNavigator(
           marginTop:15,
           paddingBottom:15,
         },
-        title:'notice',
+        title:'공지사항',
         headerTintColor:'#000'
       }
     },
@@ -260,7 +260,7 @@ const SettingsStack = createStackNavigator(
           marginTop:15,
           paddingBottom:15,
         },
-        title:'faq',
+        title:'FAQ',
         headerTintColor:'#000'
       }
     },

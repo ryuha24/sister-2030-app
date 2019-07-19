@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Image,
+    Image, ImageBackground, KeyboardAvoidingView,
     Platform,
     ScrollView,
     StyleSheet,
@@ -8,7 +8,9 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import {connect} from "react-redux";
+import axios from "axios";
 
 
 export class MyPage extends React.Component {
@@ -22,31 +24,105 @@ export class MyPage extends React.Component {
     }
     componentDidMount(){
         let _this = this;
-        return fetch('https://sisters2030.herokuapp.com/users/mypage/'+_this.state.userInfo.USER_ID)
-        .then((response) => response.json())
-        .then((responseJson) => {
-            this.setState({
-                user: responseJson
-            }, function(){
-
-            });
-
-        })
-        .catch((error) =>{
+        axios.get('https://sisters2030.herokuapp.com/users/mypage/'+_this.state.userInfo.USER_ID)
+        .then(function(result){
+            let data = result.data;
+            if(data) {
+                _this.setState({
+                    user: data.data
+                });
+            }
+        }).catch((error) =>{
             console.error(error);
         });
     }
 
     render() {
+        const keyboardVerticalOffset = Platform.OS === 'ios' ? 60 : 0;
         return (
         <View style={styles.container}>
-            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-
-                <View style={styles.getStartedContainer}>
-                    <Text>{this.state.user.USER_EMAIL}</Text>
-
+            <ScrollView style={styles.root}>
+                <View style={styles.content}>
+                    <ImageBackground source={{uri:this.state.userInfo.USER_PROFILE_URL}} imageStyle={{borderRadius: 50}} style={styles.profileImg}/>
+                    <Text style={styles.instaNick}>{this.state.userInfo.USER_INSTAGRAM_ID}</Text>
+                    <View style={styles.flexView}>
+                        <View style={styles.flexViewIn}>
+                            <Text style={{textAlign:'center'}}>
+                                게시물
+                                <Text style={{fontWeight:'bold'}}> {this.state.userInfo.USER_POST}</Text>
+                            </Text>
+                        </View>
+                        <View style={styles.flexViewIn}>
+                            <Text style={{textAlign:'center'}}>
+                                팔로워
+                                <Text style={{fontWeight:'bold'}}>{this.state.userInfo.USER_FOLLOWER}</Text>
+                            </Text>
+                        </View>
+                        <View style={styles.flexViewIn}>
+                            <Text style={{textAlign:'center'}}>
+                                팔로우
+                                <Text style={{fontWeight:'bold'}}>{this.state.userInfo.USER_FOLLOWING}</Text>
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={styles.textBottom}>
+                        <View style={styles.textBottomView}><Text style={styles.textBottom_title}>회원정보</Text></View>
+                        <View style={styles.textBottomViewBorder}>
+                            <View style={styles.bottomBox}>
+                                <View style={{flex:1,flexDirection: 'row', alignContent:'stretch',}}>
+                                    <View><Image style={styles.icons} source={require('../../../../../assets/images/icons8-name-32.png')}></Image></View>
+                                    <View style={{paddingTop:2,}}>
+                                        <Text style={styles.bottomWrap}>
+                                            <Text style={styles.bottomText}> 아이디</Text>
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={{alignItems: 'flex-end',paddingTop:2,}}>
+                                    <Text style={{color:'#fff', fontWeight:'bold'}}>{this.state.userInfo.USER_EMAIL}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.bottomBox}>
+                                <View style={{flex:1,flexDirection: 'row', alignContent:'stretch',}}>
+                                    <View><Image style={styles.icons} source={require('../../../../../assets/images/icons8-badge-32.png')}></Image></View>
+                                    <View style={{paddingTop:2,}}>
+                                        <Text style={styles.bottomWrap}>
+                                            <Text style={styles.bottomText}> 닉네임</Text>
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={{alignItems: 'flex-end'}}>
+                                    <Text style={{color:'#fff', fontWeight:'bold'}}>{this.state.userInfo.USER_NICKNAME}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.bottomBox}>
+                                <View style={{flex:1,flexDirection: 'row', alignContent:'stretch',}}>
+                                    <View><Image style={styles.icons} source={require('../../../../../assets/images/icons8-instagram-50.png')}></Image></View>
+                                    <View style={{paddingTop:2,}}>
+                                        <Text style={styles.bottomWrap}>
+                                            <Text style={styles.bottomText}> 인스타 아이디</Text>
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={{alignItems: 'flex-end'}}>
+                                    <Text style={{color:'#fff', fontWeight:'bold'}}>{this.state.userInfo.USER_INSTAGRAM_ID}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.bottomBox}>
+                                <View style={{flex:1,flexDirection: 'row', alignContent:'stretch',}}>
+                                    <View><Ionicons name="logo-usd" size={20} color="#fff" style={styles.icons}/></View>
+                                    <View style={{paddingTop:2,}}>
+                                        <Text style={styles.bottomWrap}>
+                                            <Text style={styles.bottomText}> 포인트</Text>
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={{alignItems: 'flex-end'}}>
+                                    <Text style={{color:'#fff', fontWeight:'bold'}}>{this.state.userInfo.USER_POINT}</Text>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
                 </View>
-
             </ScrollView>
 
         </View>
@@ -57,94 +133,116 @@ export class MyPage extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
+      flex: 1,
+    },
+    root: {
         flex: 1,
-        backgroundColor: '#fff',
     },
-    developmentModeText: {
-        marginBottom: 20,
-        color: 'rgba(0,0,0,0.4)',
-        fontSize: 14,
-        lineHeight: 19,
+    paragraph: {
+        margin: 24,
+        fontSize: 18,
+        fontWeight: 'bold',
         textAlign: 'center',
+        color: '#34495e',
     },
-    contentContainer: {
-        paddingTop: 30,
-    },
-    welcomeContainer: {
+    content: {
+        flex: 1,
         alignItems: 'center',
-        marginTop: 10,
-        marginBottom: 20,
+        width:'100%',
+        padding: 20,
     },
-    welcomeImage: {
+    profileImg:{
+        marginTop:30,
         width: 100,
-        height: 80,
-        resizeMode: 'contain',
-        marginTop: 3,
-        marginLeft: -10,
+        height: 100,
     },
-    getStartedContainer: {
-        alignItems: 'center',
-        marginHorizontal: 50,
+    instaNick: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 20,
+        marginBottom: 20,
     },
-    homeScreenFilename: {
-        marginVertical: 7,
+    flexView: {
+        flexDirection: 'row',
+        alignContent:'stretch',
+        width: '100%',
     },
-    codeHighlightText: {
-        color: 'rgba(96,100,109, 0.8)',
-    },
-    codeHighlightContainer: {
-        backgroundColor: 'rgba(0,0,0,0.05)',
-        borderRadius: 3,
-        paddingHorizontal: 4,
-    },
-    getStartedText: {
-        fontSize: 17,
-        color: 'rgba(96,100,109, 1)',
-        lineHeight: 24,
+    flexViewIn: {
+        flex:1,
         textAlign: 'center',
     },
-    tabBarInfoContainer: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        ...Platform.select({
-            ios: {
-                shadowColor: 'black',
-                shadowOffset: { height: -3 },
-                shadowOpacity: 0.1,
-                shadowRadius: 3,
-            },
-            android: {
-                elevation: 20,
-            },
-        }),
-        alignItems: 'center',
-        backgroundColor: '#fbfbfb',
-        paddingVertical: 20,
+    textBottom: {
+        width:'100%',
+        borderRadius: 6,
+        backgroundColor:'#ed3847',
+        color:'#fff',
+        margin:20,
+        padding:20,
+        flexDirection: 'column',
+        alignItems: 'stretch',
     },
-    tabBarInfoText: {
-        fontSize: 17,
-        color: 'rgba(96,100,109, 1)',
-        textAlign: 'center',
+
+    bottomBox: {
+        flexDirection: 'row',
+        marginBottom:5,
     },
-    navigationFilename: {
-        marginTop: 5,
+    textBottomView: {
+        width: '100%',
+        marginBottom: 18,
     },
-    helpContainer: {
-        marginTop: 15,
-        alignItems: 'center',
+    textBottomViewBorder: {
+        width: '100%',
+        marginBottom: 15,
+        borderWidth:1,
+        borderColor:'#fb606d',
+        borderStyle: "dashed",
+        padding:15,
     },
-    helpLink: {
-        paddingVertical: 15,
+    textBottom_title: {
+        width: '100%',
+        fontSize: 18,
+        color:'#fff',
+        fontWeight:'bold',
     },
-    helpLinkText: {
-        fontSize: 14,
-        color: '#2e78b7',
+    textBottomIn: {
+        width: '100%',
+        color:'#fff',
+    },
+    bottomWrap: {
+        position:'relative'
+    },
+    icons: {
+        width:20,
+        height:20,
+    },
+    bottomText: {
+        textAlign:'left',
+        fontSize:15,
+        color:'#fff',
+    },
+    footer: {
+        position:'absolute',
+        left:0,
+        right:0,
+        bottom:0,
+    },
+    footerBtnWrap:{
+        width:'100%',
+        backgroundColor:'#F2D902',
+    },
+    footerBtn: {
+        width: '100%',
+        fontSize:15,
+        fontWeight:'600',
+        textAlign:'center',
+        color:'#391D1D',
+        padding:16,
+        height:50,
     },
 });
 
 function mapStateToProps (state) {
+    console.log(state.data);
     return {
         userData: state.data
     }

@@ -8,7 +8,8 @@ import {
     TouchableOpacity,
     View,
     Dimensions,
-    AsyncStorage
+    AsyncStorage,
+    Alert
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import {logout} from "../../../../account/action";
@@ -76,35 +77,31 @@ export class Setting extends React.Component {
         this.props.navigation.navigate(destination);
     };
 
+    _alert = () => {
+        Alert.alert('준비 중', '아직 준비중입니다 \n 출금 문의는 000-0000-0000');
+    };
+
+
     render() {
         return (
             <View style={{flex:1, flexDirection: 'column',}}>
-                <View style={{height:300, backgroundColor:'#fff', flexDirection:'column'}}>
+                <View style={{height:200, backgroundColor:'#fff', flexDirection:'column'}}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <TouchableOpacity onPress={() => this._moveDetail('Notice')} style={{flex: 1, height: 100, borderWidth: 1, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
                             <Ionicons name="md-megaphone" size={24} color="#454545" />
                             <Text style={styles.iconTitle}>공지사항</Text>
                         </TouchableOpacity>
-                        <View style={{flex: 1, height: 100, borderWidth: 0.5, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
+
+                        <TouchableOpacity onPress={() => this._moveDetail('FAQ')} style={{flex: 1, height: 100, borderWidth: 0.5, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
                             <Ionicons name="ios-paper-plane" size={24} color="#454545" />
-                            <Text style={styles.iconTitle}>커뮤니티</Text>
-                        </View>
-                    </View>
-                    <View style={{flex: 1, flexDirection: 'row'}}>
-                        <TouchableOpacity onPress={() => this._moveDetail('FAQ')}  style={{flex: 1, height: 100, borderWidth: 0.5, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
-                            <Ionicons name="md-information-circle-outline" size={24} color="#454545" />
                             <Text style={styles.iconTitle}>FAQ</Text>
                         </TouchableOpacity>
-                        <View style={{flex: 1, height: 100, borderWidth: 0.5, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
-                            <Ionicons name="logo-usd" size={24} color="#454545" />
-                            <Text style={styles.iconTitle}>출금신청</Text>
-                        </View>
                     </View>
                     <View style={{flex: 1, flexDirection: 'row'}}>
-                        <View style={{flex: 1, height: 100, borderWidth: 0.5, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
-                            <Ionicons name="md-laptop" size={24} color="#454545" />
-                            <Text style={styles.iconTitle}>1:1문의</Text>
-                        </View>
+                        <TouchableOpacity onPress={this._alert} style={{flex: 1, height: 100, borderWidth: 0.5, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
+                            <Ionicons name="logo-usd" size={24} color="#454545" />
+                            <Text style={styles.iconTitle}>출금신청</Text>
+                        </TouchableOpacity>
                         <TouchableOpacity onPress={() => this._logout(this.props.navigation)} style={{flex: 1, height: 100, borderWidth: 0.5, borderColor: '#ebebeb',justifyContent: 'center', alignItems: 'center'}}>
                             <Ionicons name="md-log-out" size={24} color="#454545" />
                             <Text style={styles.iconTitle}>로그아웃</Text>

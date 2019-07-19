@@ -39,14 +39,20 @@ export class Notice extends React.Component {
     render() {
         return (
         <View style={styles.container}>
-            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-
+            <ScrollView style={styles.scrollStyle} contentContainerStyle={styles.contentContainer}>
                 <TouchableOpacity onPress={this._moveDetail} style={styles.getStartedContainer}>
-                    <Text>공지 디테일로 가봅시다!</Text>
+                    <Text style={styles.titles}>공지 디테일로 가봅시다!</Text>
+                    <Text style={styles.dates}>2019-09-09</Text>
                 </TouchableOpacity>
-
+                <TouchableOpacity onPress={this._moveDetail} style={styles.getStartedContainer}>
+                    <Text style={styles.titles}>공지 디테일로 가봅시다!</Text>
+                    <Text style={styles.dates}>2019-09-09</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this._moveDetail} style={styles.getStartedContainer}>
+                    <Text style={styles.titles}>공지 디테일로 가봅시다!</Text>
+                    <Text style={styles.dates}>2019-09-09</Text>
+                </TouchableOpacity>
             </ScrollView>
-
         </View>
         );
     }
@@ -55,8 +61,21 @@ export class Notice extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex:1,
+        width:'100%',
+        alignItems: 'center',
         backgroundColor: '#fff',
+    },
+    scrollStyle:{
+        width:'100%',
+    },
+    titles: {
+        fontSize:22,
+        fontWeight: 'bold',
+    },
+    dates: {
+        fontSize: 14,
+        color:'#333',
     },
     developmentModeText: {
         marginBottom: 20,
@@ -73,72 +92,13 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 20,
     },
-    welcomeImage: {
-        width: 100,
-        height: 80,
-        resizeMode: 'contain',
-        marginTop: 3,
-        marginLeft: -10,
-    },
     getStartedContainer: {
-        alignItems: 'center',
-        marginHorizontal: 50,
-    },
-    homeScreenFilename: {
-        marginVertical: 7,
-    },
-    codeHighlightText: {
-        color: 'rgba(96,100,109, 0.8)',
-    },
-    codeHighlightContainer: {
-        backgroundColor: 'rgba(0,0,0,0.05)',
-        borderRadius: 3,
-        paddingHorizontal: 4,
-    },
-    getStartedText: {
-        fontSize: 17,
-        color: 'rgba(96,100,109, 1)',
-        lineHeight: 24,
-        textAlign: 'center',
-    },
-    tabBarInfoContainer: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        ...Platform.select({
-            ios: {
-                shadowColor: 'black',
-                shadowOffset: { height: -3 },
-                shadowOpacity: 0.1,
-                shadowRadius: 3,
-            },
-            android: {
-                elevation: 20,
-            },
-        }),
-        alignItems: 'center',
-        backgroundColor: '#fbfbfb',
-        paddingVertical: 20,
-    },
-    tabBarInfoText: {
-        fontSize: 17,
-        color: 'rgba(96,100,109, 1)',
-        textAlign: 'center',
-    },
-    navigationFilename: {
-        marginTop: 5,
-    },
-    helpContainer: {
-        marginTop: 15,
-        alignItems: 'center',
-    },
-    helpLink: {
-        paddingVertical: 15,
-    },
-    helpLinkText: {
-        fontSize: 14,
-        color: '#2e78b7',
+        width:'100%',
+        borderBottomWidth:1,
+        borderBottomColor:'#ddd',
+        paddingLeft:20,
+        paddingBottom: 20,
+        marginBottom: 20,
     },
 });
 

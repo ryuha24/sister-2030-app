@@ -37,10 +37,13 @@ export class NoticeDetail extends React.Component {
     render() {
         return (
         <View style={styles.container}>
-            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-
+            <ScrollView style={styles.scrollStyle} contentContainerStyle={styles.contentContainer}>
                 <View style={styles.getStartedContainer}>
-                    <Text>여긴 디테일스</Text>
+                    <Text style={styles.titles}>공지 디테일로 가봅시다!</Text>
+                    <Text style={styles.dates}>2019-09-09</Text>
+                </View>
+                <View style={styles.textContent}>
+                    <Text>공지 글이 쭈르르르륵 나와야댐</Text>
                 </View>
 
             </ScrollView>
@@ -56,6 +59,23 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
+    titles: {
+        fontSize:22,
+        fontWeight: 'bold',
+    },
+    dates: {
+        fontSize: 14,
+        color:'#333',
+    },
+    scrollStyle: {
+        backgroundColor: '#f2f2f2',
+    },
+    textContent: {
+        flex:1,
+        backgroundColor:'#fff',
+        fontSize:12,
+        padding:20,
+    },
     developmentModeText: {
         marginBottom: 20,
         color: 'rgba(0,0,0,0.4)',
@@ -64,7 +84,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     contentContainer: {
-        paddingTop: 30,
+        flex:1,
     },
     welcomeContainer: {
         alignItems: 'center',
@@ -79,8 +99,9 @@ const styles = StyleSheet.create({
         marginLeft: -10,
     },
     getStartedContainer: {
-        alignItems: 'center',
-        marginHorizontal: 50,
+        backgroundColor:'#fff',
+        marginBottom:10,
+        padding:20,
     },
     homeScreenFilename: {
         marginVertical: 7,

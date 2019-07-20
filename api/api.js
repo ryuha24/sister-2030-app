@@ -4,7 +4,7 @@ import {AsyncStorage} from "react-native";
 
 // const baseUri = 'http://172.20.10.2:3000';
 // const baseUri = 'http://192.168.219.102:3000';
-const baseUri = "https://sisters2030.herokuapp.com";
+const baseUri = "https://admin-2030sisters.herokuapp.com";
 async function rootApi (method, route, args) {
     try {
         switch (method) {

@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import HTMLView from 'react-native-htmlview';
 import axios from 'axios';
 import dateFormat from 'dateformat';
 
@@ -22,7 +23,7 @@ export class FAQdetail extends React.Component {
     _onRefresh = () => {
         let _this = this;
         this.setState({refreshing: true});
-        axios.get('https://sisters2030.herokuapp.com/notice/api/faq/detail/'+_this.props.navigation.getParam('faqId'))
+        axios.get('https://admin-2030sisters.herokuapp.com/notice/api/faq/detail/'+_this.props.navigation.getParam('faqId'))
         .then(function(result){
             _this.setState({
                 refreshing: false,
@@ -37,7 +38,7 @@ export class FAQdetail extends React.Component {
     componentDidMount(){
         let _this = this;
         this.setState({refreshing: true});
-        axios.get('https://sisters2030.herokuapp.com/notice/api/faq/detail/'+_this.props.navigation.getParam('faqId'))
+        axios.get('https://admin-2030sisters.herokuapp.com/notice/api/faq/detail/'+_this.props.navigation.getParam('faqId'))
         .then(function(result){
             _this.setState({
                 refreshing: false,
@@ -58,7 +59,7 @@ export class FAQdetail extends React.Component {
                         <Text style={styles.dates}>{dateFormat(this.state.faq.DATA_OCCR, "yyyy-mm-dd")}</Text>
                     </View>
                     <View style={styles.textContent}>
-                        <Text>{this.state.faq.ADMIN_BOARD_DESCRIPTION}</Text>
+                        <HTMLView value={this.state.faq.ADMIN_BOARD_DESCRIPTION} />
                     </View>
 
                 </ScrollView>

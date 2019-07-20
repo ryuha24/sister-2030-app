@@ -24,7 +24,7 @@ export class MyPage extends React.Component {
     }
     componentDidMount(){
         let _this = this;
-        axios.get('https://sisters2030.herokuapp.com/users/mypage/'+_this.state.userInfo.USER_ID)
+        axios.get('https://admin-2030sisters.herokuapp.com/users/mypage/'+_this.state.userInfo.USER_ID)
         .then(function(result){
             let data = result.data;
             if(data) {

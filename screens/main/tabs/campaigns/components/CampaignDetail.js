@@ -8,12 +8,15 @@ import {
     View,
     Modal,
     Dimensions,
-    RefreshControl
+    RefreshControl,
+    Platform,
+    WebView
 } from 'react-native';
 import axios from 'axios';
 import {connect} from "react-redux";
 import dateFormat from 'dateformat';
 import LottieView from 'lottie-react-native';
+import HTML from 'react-native-render-html';
 
 export class CampaignDetail extends React.Component {
     constructor(props) {
@@ -23,6 +26,8 @@ export class CampaignDetail extends React.Component {
             userInfo: props.userData.userData.user,
             modalVisible: false,
             campaign: {},
+            hashtag: "",
+            description: "",
             appliedYN: "",
             category: {
                 product: "제품",
@@ -40,34 +45,22 @@ export class CampaignDetail extends React.Component {
             }
         }
     }
-    _onRefresh = () => {
-        this.setState({refreshing: true});
-        fetch('https://sisters2030.herokuapp.com/campaign/campaignViews/'+this.props.navigation.getParam('campaignId'))
-        .then((response) => response.json())
-        .then((responseJson) => {
-            this.setState({
-                refreshing: false,
-                campaign: responseJson
-            }, function(){
-
-            });
-
-        })
-        .catch((error) =>{
-            console.error(error);
-        });
-    }
 
     componentDidMount(){
         let _this = this;
-        return fetch('https://sisters2030.herokuapp.com/campaign/campaignViews/'+_this.props.navigation.getParam('campaignId')+'?userId='+_this.props.userData.userData.user.USER_ID)
+        return fetch('https://admin-2030sisters.herokuapp.com/campaign/campaignViews/'+_this.props.navigation.getParam('campaignId')+'?userId='+_this.props.userData.userData.user.USER_ID)
         .then((response) => response.json())
         .then((responseJson) => {
+            let hashtags = responseJson.campaign.hashtag.split(',');
+            let hashtagWithHash = hashtags.map(hashtag => {
+                return ('#'+hashtag.trim());
+            });
             this.setState({
                 campaign: responseJson.campaign,
-                appliedYN: responseJson.appliedYN
+                appliedYN: responseJson.appliedYN,
+                hashtag: hashtagWithHash,
+                description: responseJson.campaign.description
             }, function(){
-
             });
 
         })
@@ -79,7 +72,7 @@ export class CampaignDetail extends React.Component {
     setModalVisible(visible) {
         let _this = this;
         _this.setState({modalVisible: visible});
-        axios.post('https://sisters2030.herokuapp.com/apply/campaign/'+this.props.navigation.getParam('campaignId'), {userId: _this.props.userData.userData.user.USER_ID})
+        axios.post('https://admin-2030sisters.herokuapp.com/apply/campaign/'+this.props.navigation.getParam('campaignId'), {userId: _this.props.userData.userData.user.USER_ID})
         .then(function(result){
             let data = result.data;
             if(data) {
@@ -97,10 +90,16 @@ export class CampaignDetail extends React.Component {
         });
 
     }
+    onNavigationStateChange(navState) {
+        this.setState({
+            height: navState.title,
+        });
+    }
     // 개가튼거 !!!! 아이콘 이동 =
     _moveCampaignList = () => this.props.navigation.navigate('CampaignDetail');
 
     render() {
+        var html = '<!DOCTYPE html><html><body>' + this.state.description + '</body></html>';
         return (
         <View style={styles.wrap}>
             <Modal
@@ -130,12 +129,6 @@ export class CampaignDetail extends React.Component {
             <ScrollView
                 style={styles.container}
                 contentContainerStyle={styles.contentContainer}
-                refreshControl={
-                    <RefreshControl
-                    refreshing={this.state.refreshing}
-                    onRefresh={this._onRefresh}
-                    />
-                }
             >
                 <View style={{flex: 1, flexDirection: 'column', flexWrap: 'wrap', alignItems: 'flex-start', width:'100%'}}>
                     <View style={styles.viewTop}>
@@ -165,23 +158,19 @@ export class CampaignDetail extends React.Component {
                     <View style={styles.viewContent}>
                         <View style={styles.viewContentWrap}>
                             <Text style={styles.viewContentTitle}>상세내용</Text>
-                            <Image
-                                source={{uri:'https://s3.ap-northeast-2.amazonaws.com/www.2030sisters.com/campaigns/descriptionImage/test.jpeg'}}
-                                resizeMode={'contain'}
-                                style={styles.images}
-                            />
+                            <HTML html={this.state.campaign.description} imagesMaxWidth={Dimensions.get('window').width} />
                         </View>
                         <View style={styles.viewContentWrap}>
                             <Text style={styles.viewContentTitle}>유의사항</Text>
-                            <Text>{this.state.campaign.warning}</Text>
+                            <HTML html={this.state.campaign.warning} imagesMaxWidth={Dimensions.get('window').width} />
                         </View>
                         <View style={styles.viewContentWrap}>
                             <Text style={styles.viewContentTitle}>필수 삽입 해시태그</Text>
-                            <Text>{this.state.campaign.hashtag}</Text>
+                            <Text>{this.state.hashtag}</Text>
                         </View>
                         <View style={styles.viewContentWrap}>
                             <Text style={styles.viewContentTitle}>가이드</Text>
-                            <Text>{this.state.campaign.guide}</Text>
+                            <HTML html={this.state.campaign.guide} imagesMaxWidth={Dimensions.get('window').width} />
                         </View>
                     </View>
                 </View>
@@ -208,6 +197,11 @@ export class CampaignDetail extends React.Component {
     }
 }
 const win = Dimensions.get('window');
+const htmlStyles = StyleSheet.create({
+    img: {
+        width: '100%'
+    }
+});
 const styles = StyleSheet.create({
     wrap: {
         flex:1,
@@ -260,11 +254,13 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     viewContent: {
+        flex: 1,
         flexDirection: 'column',
         width:'100%',
         marginTop:25,
     },
     viewContentWrap: {
+        flex: 1,
         flexDirection: 'column',
         marginBottom: 30,
     },
@@ -301,10 +297,18 @@ const styles = StyleSheet.create({
         justifyContent: undefined,
     },
     images: {
+        backgroundColor: "black",
         flex: 1,
         alignSelf: 'stretch',
         width: '100%',
         height: 2150,
+    },
+    WebViewStyle:
+    {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex:1,
+        marginTop: (Platform.OS) === 'ios' ? 20 : 0
     }
 });
 

@@ -20,7 +20,7 @@ export class FAQ extends React.Component {
     }
     _onRefresh = () => {
         this.setState({refreshing: true});
-        fetch('https://sisters2030.herokuapp.com/notice/api/faq')
+        fetch('https://admin-2030sisters.herokuapp.com/notice/api/faq')
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({
@@ -33,7 +33,7 @@ export class FAQ extends React.Component {
         })
     };
     componentDidMount(){
-        return fetch('https://sisters2030.herokuapp.com/notice/api/faq')
+        return fetch('https://admin-2030sisters.herokuapp.com/notice/api/faq')
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({

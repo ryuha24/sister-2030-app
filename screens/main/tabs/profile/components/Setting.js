@@ -27,7 +27,7 @@ export class Setting extends React.Component {
             await AsyncStorage.removeItem('user_email');
             await AsyncStorage.removeItem('user_profileUrl');
 
-            fetch('https://sisters2030.herokuapp.com/users/logout')
+            fetch('https://admin-2030sisters.herokuapp.com/users/logout')
             .then((response) => response.json())
             .then((responseJson) => {
                 if(responseJson) {

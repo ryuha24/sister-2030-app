@@ -41,7 +41,7 @@ export class ReviewList extends React.Component {
     _onRefresh = () => {
         this.setState({refreshing: true});
         let _this = this;
-        axios.get('https://sisters2030.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.USER_ID)
+        axios.get('https://admin-2030sisters.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.USER_ID)
         .then(function(result) {
             let data = result.data;
             let applicationLists = data.data;
@@ -57,7 +57,7 @@ export class ReviewList extends React.Component {
     };
     componentDidMount(){
         let _this = this;
-        axios.get('https://sisters2030.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.USER_ID)
+        axios.get('https://admin-2030sisters.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.USER_ID)
         .then(function(result) {
             let data = result.data;
             let applicationLists = data.data;
@@ -70,36 +70,6 @@ export class ReviewList extends React.Component {
             }
         })
     }
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         headerStyle: {
-    //             backgroundColor: '#fff',
-    //             shadowColor: 'transparent',
-    //             shadowRadius: 0,
-    //             shadowOffset: {
-    //                 height: 0,
-    //             },
-    //             borderBottomWidth: 0,
-    //             marginTop: 15,
-    //             paddingBottom: 15,
-    //         },
-    //         headerLeft: (
-    //         <Text style={{marginLeft: 10, fontSize: 24, fontWeight: 'bold'}}>리뷰</Text>
-    //         ),
-    //         headerRight: (
-    //         // onPress={()=>navigation.navigate('MyPage')}
-    //         <TouchableOpacity style={{
-    //             right: Platform.OS === 'ios' ? Dimensions.get("window").height < 667 ? '10%' : '5%' : '25%',
-    //             backgroundColor: 'transparent',
-    //             paddingLeft: 15,
-    //             marginRight: 10,
-    //         }}>
-    //             <Image style={{width: 40, height: 40, borderRadius: 20,}}
-    //                    source={{uri: 'https://instagram.ficn2-1.fna.fbcdn.net/vp/f54eadce17f495e92c8fad5360f58098/5D655586/t51.2885-19/s150x150/11821094_185810741751051_1102813722_a.jpg?_nc_ht=instagram.ficn2-1.fna.fbcdn.net'}}/>
-    //         </TouchableOpacity>
-    //         ),
-    //     }
-    // };
 
     render() {
         return (
@@ -130,7 +100,7 @@ export class ReviewList extends React.Component {
                                             <Text style={styles.reviewTitle}>{application.CAMPAIGN.CAMPAIGN_TITLE}</Text>
                                             <Text style={styles.reviewSubTitle}>{application.CAMPAIGN.CAMPAIGN_SUB_TITLE}</Text>
                                             <Text style={styles.reviewEndDate}>마감 {dateFormat(application.CAMPAIGN.CAMPAIGN_ED_DT, "yyyy-mm-dd")}</Text>
-                                            <Text style={styles.reviewEndDate}>리뷰 {application.APPLICATION_RESULT ? '달았어염!' : '달아주세염!'}</Text>
+                                            <Text style={styles.reviewEndDate}>리뷰 {application.APPLICATION_RESULT ? '리뷰등록 완료' : '리뷰를 등록해주세요'}</Text>
                                             <View style={styles.blackBg}></View>
                                         </ImageBackground>
                                     </View>
@@ -138,7 +108,7 @@ export class ReviewList extends React.Component {
                             )
                         })
                     ) : (
-                        <Text>아직 지원 내역이 없습니당:)</Text>
+                        <Text style={styles.nodata}>아직 지원 내역이 없습니다 :)</Text>
                     )
                 }
                 </View>
@@ -167,6 +137,12 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         paddingTop: 30,
+    },
+    nodata: {
+        flex:1,
+        fontWeight:'bold',
+        fontSize: 15,
+        textAlign: 'center'
     },
     welcomeContainer: {
         alignItems: 'center',

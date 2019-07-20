@@ -64,7 +64,7 @@ export class ReviewDetail extends React.Component {
     };
 
     componentDidMount(){
-        return fetch('https://sisters2030.herokuapp.com/users/applied/'+this.props.navigation.getParam('applicationId'))
+        return fetch('https://admin-2030sisters.herokuapp.com/users/applied/'+this.props.navigation.getParam('applicationId'))
         .then((response) => response.json())
         .then((responseJson) => {
             let today = (new Date()).getTime();
@@ -94,7 +94,7 @@ export class ReviewDetail extends React.Component {
             applicationId: _this.state.application.APPLICATION_ID,
             result: _this.state.resultUrl ? _this.state.resultUrl : _this.state.application.APPLICATION_RESULT
         };
-        axios.post('https://sisters2030.herokuapp.com/apply/submit/result',data)
+        axios.post('https://admin-2030sisters.herokuapp.com/apply/submit/result',data)
         .then(function(result){
             let data = result.data;
             if(data) {

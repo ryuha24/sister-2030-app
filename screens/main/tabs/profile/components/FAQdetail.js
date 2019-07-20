@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Dimensions,
     Image,
     Platform,
     ScrollView,
@@ -8,9 +9,9 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import HTMLView from 'react-native-htmlview';
 import axios from 'axios';
 import dateFormat from 'dateformat';
+import HTML from "react-native-render-html";
 
 export class FAQdetail extends React.Component {
     constructor(props) {
@@ -59,7 +60,7 @@ export class FAQdetail extends React.Component {
                         <Text style={styles.dates}>{dateFormat(this.state.faq.DATA_OCCR, "yyyy-mm-dd")}</Text>
                     </View>
                     <View style={styles.textContent}>
-                        <HTMLView value={this.state.faq.ADMIN_BOARD_DESCRIPTION} />
+                        <HTML html={this.state.faq.ADMIN_BOARD_DESCRIPTION} imagesMaxWidth={Dimensions.get('window').width.width*0.95} />
                     </View>
 
                 </ScrollView>

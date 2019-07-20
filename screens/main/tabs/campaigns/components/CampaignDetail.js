@@ -17,7 +17,6 @@ import {connect} from "react-redux";
 import dateFormat from 'dateformat';
 import LottieView from 'lottie-react-native';
 import HTML from 'react-native-render-html';
-
 export class CampaignDetail extends React.Component {
     constructor(props) {
         super(props);
@@ -99,7 +98,6 @@ export class CampaignDetail extends React.Component {
     _moveCampaignList = () => this.props.navigation.navigate('CampaignDetail');
 
     render() {
-        var html = '<!DOCTYPE html><html><body>' + this.state.description + '</body></html>';
         return (
         <View style={styles.wrap}>
             <Modal
@@ -158,11 +156,11 @@ export class CampaignDetail extends React.Component {
                     <View style={styles.viewContent}>
                         <View style={styles.viewContentWrap}>
                             <Text style={styles.viewContentTitle}>상세내용</Text>
-                            <HTML html={this.state.campaign.description} imagesMaxWidth={Dimensions.get('window').width} />
+                            <HTML html={this.state.campaign.description} imagesMaxWidth={Dimensions.get('window').width*0.95} />
                         </View>
                         <View style={styles.viewContentWrap}>
                             <Text style={styles.viewContentTitle}>유의사항</Text>
-                            <HTML html={this.state.campaign.warning} imagesMaxWidth={Dimensions.get('window').width} />
+                            <HTML html={this.state.campaign.warning} imagesMaxWidth={Dimensions.get('window').width.width*0.95} />
                         </View>
                         <View style={styles.viewContentWrap}>
                             <Text style={styles.viewContentTitle}>필수 삽입 해시태그</Text>
@@ -170,7 +168,7 @@ export class CampaignDetail extends React.Component {
                         </View>
                         <View style={styles.viewContentWrap}>
                             <Text style={styles.viewContentTitle}>가이드</Text>
-                            <HTML html={this.state.campaign.guide} imagesMaxWidth={Dimensions.get('window').width} />
+                            <HTML html={this.state.campaign.guide} imagesMaxWidth={Dimensions.get('window').width.width*0.95} />
                         </View>
                     </View>
                 </View>

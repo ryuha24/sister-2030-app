@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Dimensions,
     Image,
     Platform,
     ScrollView,
@@ -8,9 +9,9 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import HTMLView from 'react-native-htmlview';
 import axios from 'axios';
 import dateFormat from 'dateformat';
+import HTML from "react-native-render-html";
 
 
 export class NoticeDetail extends React.Component {
@@ -60,7 +61,7 @@ export class NoticeDetail extends React.Component {
                     <Text style={styles.dates}>{dateFormat(this.state.notice.DATA_OCCR, "yyyy-mm-dd")}</Text>
                 </View>
                 <View style={styles.textContent}>
-                    <HTMLView value={this.state.notice.ADMIN_BOARD_DESCRIPTION} />
+                    <HTML html={this.state.notice.ADMIN_BOARD_DESCRIPTION} imagesMaxWidth={Dimensions.get('window').width.width*0.95} />
                 </View>
 
             </ScrollView>

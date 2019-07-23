@@ -1,31 +1,23 @@
 {
   "expo": {
-    "name": "sisters2030App",
-    "description": "A very interesting project.",
-    "slug": "sisters2030App",
+    "name": "sisters2030",
+    "slug": "sisters-2030",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/203sisters_logo.jpeg",
+    "icon": "./assets/images/2030sisters_logo.png",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.gooddaycompany.2030sisters"
+      "bundleIdentifier": "com.2030sisters.sisters2030"
     },
     "android": {
-      "package": "com.gooddaycompany.2030sisters"
+      "package": "com.gooddaycompany.sisters2030"
     }
   }
 }

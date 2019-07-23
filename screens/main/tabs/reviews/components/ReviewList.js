@@ -41,7 +41,7 @@ export class ReviewList extends React.Component {
     _onRefresh = () => {
         this.setState({refreshing: true});
         let _this = this;
-        axios.get('https://admin-2030sisters.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.USER_ID)
+        axios.get('https://admin-2030sisters.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.id)
         .then(function(result) {
             let data = result.data;
             let applicationLists = data.data;
@@ -57,7 +57,7 @@ export class ReviewList extends React.Component {
     };
     componentDidMount(){
         let _this = this;
-        axios.get('https://admin-2030sisters.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.USER_ID)
+        axios.get('https://admin-2030sisters.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.id)
         .then(function(result) {
             let data = result.data;
             let applicationLists = data.data;

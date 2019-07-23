@@ -11,7 +11,8 @@ import {
     Modal,
     TextInput,
     Clipboard,
-    RefreshControl
+    RefreshControl,
+    AsyncStorage
 } from 'react-native';
 import dateFormat from 'dateformat';
 import {connect} from "react-redux";
@@ -23,7 +24,7 @@ export class ReviewDetail extends React.Component {
         super(props);
         this.state = {
             refreshing: false,
-            userInfo: props.userData.userData.user,
+            userInfo: props.userData.user,
             modalVisible: false,
             application: {
                 CAMPAIGN: {}

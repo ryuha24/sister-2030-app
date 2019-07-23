@@ -69,6 +69,7 @@ async function post (route, args) {
             throw responseJson.message;
         }
         if (route === '/users/login') {
+            console.log("response api", responseJson);
             await AsyncStorage.setItem('user_id', responseJson.id);
             await AsyncStorage.setItem('user_session', responseJson.session);
             await AsyncStorage.setItem('user_email', responseJson.email);

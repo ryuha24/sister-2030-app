@@ -7,6 +7,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    AsyncStorage
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import {connect} from "react-redux";
@@ -19,14 +20,15 @@ export class MyPage extends React.Component {
         this.state = {
             user:{},
             modalVisible: false,
-            userInfo: props.userData.userData.user,
+            userInfo: props.profile.user
         }
     }
     componentDidMount(){
         let _this = this;
-        axios.get('https://admin-2030sisters.herokuapp.com/users/mypage/'+_this.state.userInfo.USER_ID)
+        axios.get('https://admin-2030sisters.herokuapp.com/users/mypage/'+_this.state.userInfo.id)
         .then(function(result){
             let data = result.data;
+            console.log("state",_this.state.userInfo.id);
             if(data) {
                 _this.setState({
                     user: data.data
@@ -43,25 +45,25 @@ export class MyPage extends React.Component {
         <View style={styles.container}>
             <ScrollView style={styles.root}>
                 <View style={styles.content}>
-                    <ImageBackground source={{uri:this.state.userInfo.USER_PROFILE_URL}} imageStyle={{borderRadius: 50}} style={styles.profileImg}/>
-                    <Text style={styles.instaNick}>{this.state.userInfo.USER_INSTAGRAM_ID}</Text>
+                    <ImageBackground source={{uri:this.state.userInfo.profileUrl}} imageStyle={{borderRadius: 50}} style={styles.profileImg}/>
+                    <Text style={styles.instaNick}>{this.state.userInfo.instagram}</Text>
                     <View style={styles.flexView}>
                         <View style={styles.flexViewIn}>
                             <Text style={{textAlign:'center'}}>
                                 게시물
-                                <Text style={{fontWeight:'bold'}}> {this.state.userInfo.USER_POST}</Text>
+                                <Text style={{fontWeight:'bold'}}> {this.state.userInfo.post}</Text>
                             </Text>
                         </View>
                         <View style={styles.flexViewIn}>
                             <Text style={{textAlign:'center'}}>
                                 팔로워
-                                <Text style={{fontWeight:'bold'}}>{this.state.userInfo.USER_FOLLOWER}</Text>
+                                <Text style={{fontWeight:'bold'}}>{this.state.userInfo.follower}</Text>
                             </Text>
                         </View>
                         <View style={styles.flexViewIn}>
                             <Text style={{textAlign:'center'}}>
                                 팔로우
-                                <Text style={{fontWeight:'bold'}}>{this.state.userInfo.USER_FOLLOWING}</Text>
+                                <Text style={{fontWeight:'bold'}}>{this.state.userInfo.following}</Text>
                             </Text>
                         </View>
                     </View>
@@ -78,7 +80,7 @@ export class MyPage extends React.Component {
                                     </View>
                                 </View>
                                 <View style={{alignItems: 'flex-end',paddingTop:2,}}>
-                                    <Text style={{color:'#fff', fontWeight:'bold'}}>{this.state.userInfo.USER_EMAIL}</Text>
+                                    <Text style={{color:'#fff', fontWeight:'bold'}}>{this.state.userInfo.email}</Text>
                                 </View>
                             </View>
                             <View style={styles.bottomBox}>
@@ -91,7 +93,7 @@ export class MyPage extends React.Component {
                                     </View>
                                 </View>
                                 <View style={{alignItems: 'flex-end'}}>
-                                    <Text style={{color:'#fff', fontWeight:'bold'}}>{this.state.userInfo.USER_NICKNAME}</Text>
+                                    <Text style={{color:'#fff', fontWeight:'bold'}}>{this.state.userInfo.name}</Text>
                                 </View>
                             </View>
                             <View style={styles.bottomBox}>
@@ -104,7 +106,7 @@ export class MyPage extends React.Component {
                                     </View>
                                 </View>
                                 <View style={{alignItems: 'flex-end'}}>
-                                    <Text style={{color:'#fff', fontWeight:'bold'}}>{this.state.userInfo.USER_INSTAGRAM_ID}</Text>
+                                    <Text style={{color:'#fff', fontWeight:'bold'}}>{this.state.userInfo.instagram}</Text>
                                 </View>
                             </View>
                             <View style={styles.bottomBox}>
@@ -117,7 +119,7 @@ export class MyPage extends React.Component {
                                     </View>
                                 </View>
                                 <View style={{alignItems: 'flex-end'}}>
-                                    <Text style={{color:'#fff', fontWeight:'bold'}}>{this.state.userInfo.USER_POINT}</Text>
+                                    <Text style={{color:'#fff', fontWeight:'bold'}}>{this.state.userInfo.point}</Text>
                                 </View>
                             </View>
                         </View>
@@ -244,7 +246,7 @@ const styles = StyleSheet.create({
 function mapStateToProps (state) {
     console.log(state.data);
     return {
-        userData: state.data
+        profile: state.data
     }
 }
 

@@ -91,8 +91,20 @@ function* getProfile(action) {
         const data = yield all({
             user: call(api, 'GET', '/users/mypage/'+action.id, {}), //instagramId, follower, following, applicationInfo
         });
+        let user = data.user;
+        let inputUser = {
+            id: user.USER_ID,
+            email: user.USER_EMAIL,
+            name : user.USER_NICKNAME,
+            profileUrl: user.USER_PROFILE_URL,
+            following: user.USER_FOLLOWING,
+            follower: user.USER_FOLLOWER,
+            post: user.USER_POST,
+            instagram: user.USER_INSTAGRAM_ID,
+            point: user.USER_POINT
+        };
 
-        yield put(updateData(data));
+        yield put(updateUser(inputUser));
         yield call(navigateToMain, action.navigation);
         yield put(loginSuccess());
     } catch(err) {

@@ -9,6 +9,7 @@ const initialState = {
     data: {
         navigation: {},
         user: {},
+        userData:{},
         instagram: {},
         signUpInfo: {},
         campaigns: []

@@ -10,7 +10,8 @@ import {
     Dimensions,
     RefreshControl,
     Platform,
-    WebView
+    WebView,
+    AsyncStorage
 } from 'react-native';
 import axios from 'axios';
 import {connect} from "react-redux";
@@ -22,7 +23,7 @@ export class CampaignDetail extends React.Component {
         super(props);
         this.state = {
             refreshing: false,
-            userInfo: props.userData.userData.user,
+            userInfo: props.userData.user,
             modalVisible: false,
             campaign: {},
             hashtag: "",
@@ -47,7 +48,8 @@ export class CampaignDetail extends React.Component {
 
     componentDidMount(){
         let _this = this;
-        return fetch('https://admin-2030sisters.herokuapp.com/campaign/campaignViews/'+_this.props.navigation.getParam('campaignId')+'?userId='+_this.props.userData.userData.user.id)
+
+        return fetch('https://admin-2030sisters.herokuapp.com/campaign/campaignViews/'+_this.props.navigation.getParam('campaignId')+'?userId='+_this.state.userInfo.id)
         .then((response) => response.json())
         .then((responseJson) => {
             let hashtags = responseJson.campaign.hashtag.split(',');
@@ -71,7 +73,8 @@ export class CampaignDetail extends React.Component {
     setModalVisible(visible) {
         let _this = this;
         _this.setState({modalVisible: visible});
-        axios.post('https://admin-2030sisters.herokuapp.com/apply/campaign/'+this.props.navigation.getParam('campaignId'), {userId: _this.props.userData.userData.user.id})
+        axios.post('https://admin-2030sisters.herokuapp.com/apply/campaign/'+this.props.navigation.getParam('campaignId'), {userId: _this.state.userInfo.id})
+
         .then(function(result){
             let data = result.data;
             if(data) {
@@ -311,6 +314,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps (state) {
+    console.log("campaign", state.data);
     return {
         userData: state.data
     }

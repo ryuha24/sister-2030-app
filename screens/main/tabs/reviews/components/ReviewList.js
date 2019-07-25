@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
     Dimensions, ImageBackground,
-    RefreshControl
+    RefreshControl, AsyncStorage
 } from 'react-native';
 import {connect} from "react-redux";
 import dateFormat from "dateformat";
@@ -20,7 +20,7 @@ export class ReviewList extends React.Component {
         super(props);
         this.state = {
             refreshing: false,
-            userInfo: props.userData.userData.user,
+            userInfo: props.userData.user,
             applicationList : [],
             category: {
                 product: "제품",
@@ -41,7 +41,7 @@ export class ReviewList extends React.Component {
     _onRefresh = () => {
         this.setState({refreshing: true});
         let _this = this;
-        axios.get('https://admin-2030sisters.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.id)
+        axios.get('https://admin-2030sisters.herokuapp.com/users/applications/list/'+_this.state.userInfo.id)
         .then(function(result) {
             let data = result.data;
             let applicationLists = data.data;
@@ -57,7 +57,7 @@ export class ReviewList extends React.Component {
     };
     componentDidMount(){
         let _this = this;
-        axios.get('https://admin-2030sisters.herokuapp.com/users/applications/list/'+_this.props.userData.userData.user.id)
+        axios.get('https://admin-2030sisters.herokuapp.com/users/applications/list/'+_this.state.userInfo.id)
         .then(function(result) {
             let data = result.data;
             let applicationLists = data.data;

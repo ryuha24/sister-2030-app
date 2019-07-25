@@ -1,11 +1,14 @@
 import React from 'react';
-import {View, Text, Image, Platform, Dimensions, TouchableOpacity} from 'react-native';
+import {View, Text, Image, Platform, Dimensions, TouchableOpacity,AsyncStorage} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import {connect} from "react-redux";
 
 export class MainHeader extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            profileUrl: props.profile.user.profileUrl
+        }
     }
     render() {
         return (
@@ -18,7 +21,7 @@ export class MainHeader extends React.Component {
                 marginRight: 10,
             }}>
                 <Image style={{width: 40, height: 40, borderRadius: 20,}}
-                       source={{uri: this.props.profile.user.profileUrl? this.props.profile.user.profileUrl : this.props.profile.userData.user.USER_PROFILE_URL}}/>
+                       source={{uri: this.state.profileUrl}}/>
             </TouchableOpacity>
         );
     }
@@ -26,7 +29,7 @@ export class MainHeader extends React.Component {
 
 
 function mapStateToProps (state) {
-    console.log("main header",state.data);
+    console.log("///////////////", state.data);
     return {
         profile: state.data
     }

@@ -42,39 +42,32 @@ export class Login extends React.Component {
         // }
         return (
                 <ImageBackground source={require("../../../assets/images/bg3.png")} style={{flex:1, justifyContent: 'center', alignItem:'center'}}>
-                    <KeyboardAvoidingView
-                        style={styles.container}
-                        behavior="padding"
-                    >
+                    <View style={styles.bottomBtn} >
+                        <TextInput style = {styles.input}
+                                   underlineColorAndroid = "transparent"
+                                   placeholder = "아이디"
+                                   placeholderTextColor = "#fff"
+                                   autoCapitalize = "none"
+                                   onChangeText = {this.handleEmail}/>
 
-                        <View style={styles.bottomBtn} >
-                            <TextInput style = {styles.input}
-                                       underlineColorAndroid = "transparent"
-                                       placeholder = "아이디"
-                                       placeholderTextColor = "#fff"
-                                       autoCapitalize = "none"
-                                       onChangeText = {this.handleEmail}/>
-
-                            <TextInput style = {styles.input}
-                                       underlineColorAndroid = "transparent"
-                                       placeholder = "비밀번호"
-                                       placeholderTextColor = "#fff"
-                                       autoCapitalize = "none"
-                                       secureTextEntry={true}
-                                       onChangeText = {this.handlePassword}/>
-                            <TouchableOpacity
-                                style={styles.loginWrap}
-                                onPress = {
-                                    () => this._login(this.state.email, this.state.password)
-                                }>
-                                <Text style={styles.loginBtn}>로그인</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={this._signUp}>
-                                <Text style={styles.joinBtn}>아직 회원이 아니신가요?</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                    </KeyboardAvoidingView>
+                        <TextInput style = {styles.input}
+                                   underlineColorAndroid = "transparent"
+                                   placeholder = "비밀번호"
+                                   placeholderTextColor = "#fff"
+                                   autoCapitalize = "none"
+                                   secureTextEntry={true}
+                                   onChangeText = {this.handlePassword}/>
+                        <TouchableOpacity
+                            style={styles.loginWrap}
+                            onPress = {
+                                () => this._login(this.state.email, this.state.password)
+                            }>
+                            <Text style={styles.loginBtn}>로그인</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={this._signUp}>
+                            <Text style={styles.joinBtn}>아직 회원이 아니신가요?</Text>
+                        </TouchableOpacity>
+                    </View>
                 </ImageBackground>
         );
     }

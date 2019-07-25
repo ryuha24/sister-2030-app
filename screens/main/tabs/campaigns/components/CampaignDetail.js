@@ -47,7 +47,7 @@ export class CampaignDetail extends React.Component {
 
     componentDidMount(){
         let _this = this;
-        return fetch('https://admin-2030sisters.herokuapp.com/campaign/campaignViews/'+_this.props.navigation.getParam('campaignId')+'?userId='+_this.props.userData.userData.user.USER_ID)
+        return fetch('https://admin-2030sisters.herokuapp.com/campaign/campaignViews/'+_this.props.navigation.getParam('campaignId')+'?userId='+_this.props.userData.userData.user.id)
         .then((response) => response.json())
         .then((responseJson) => {
             let hashtags = responseJson.campaign.hashtag.split(',');
@@ -71,7 +71,7 @@ export class CampaignDetail extends React.Component {
     setModalVisible(visible) {
         let _this = this;
         _this.setState({modalVisible: visible});
-        axios.post('https://admin-2030sisters.herokuapp.com/apply/campaign/'+this.props.navigation.getParam('campaignId'), {userId: _this.props.userData.userData.user.USER_ID})
+        axios.post('https://admin-2030sisters.herokuapp.com/apply/campaign/'+this.props.navigation.getParam('campaignId'), {userId: _this.props.userData.userData.user.id})
         .then(function(result){
             let data = result.data;
             if(data) {

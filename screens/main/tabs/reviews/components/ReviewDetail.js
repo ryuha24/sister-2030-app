@@ -12,18 +12,19 @@ import {
     TextInput,
     Clipboard,
     RefreshControl,
-    AsyncStorage
+    KeyboardAvoidingView,
+    AsyncStorage, Dimensions
 } from 'react-native';
 import dateFormat from 'dateformat';
 import {connect} from "react-redux";
 import axios from "axios";
 import LottieView from "lottie-react-native";
+import HTML from 'react-native-render-html';
 
 export class ReviewDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            refreshing: false,
             userInfo: props.userData.user,
             modalVisible: false,
             application: {
@@ -49,10 +50,6 @@ export class ReviewDetail extends React.Component {
             clipboardContent: null,
         }
     }
-    _onRefresh = () => {
-        this.setState({refreshing: true});
-        c
-    };
 
     readFromClipboard = async () => {
         const clipboardContent = await Clipboard.getString();
@@ -60,7 +57,7 @@ export class ReviewDetail extends React.Component {
     };
 
     writeToClipboard = async () => {
-        await Clipboard.setString(this.state.text);
+        await Clipboard.setString(this.state.hashtag);
         alert('복사 되었습니다.');
     };
 
@@ -73,11 +70,13 @@ export class ReviewDetail extends React.Component {
             let YN = today >= endDate;
             let hashtags = responseJson.data.CAMPAIGN.CAMPAIGN_HASH_TAG.split(',');
             let hashtagWithHash = hashtags.map(hashtag => {
-                return ('#'+hashtag);
+                return ('#'+hashtag.trim());
             });
+            let hashString = hashtagWithHash.toString();
+
             this.setState({
                 application: responseJson.data,
-                hashtag: hashtagWithHash.toString(),
+                hashtag: hashString.replace(',', ' '),
                 endYN: YN
             }, function(){
 
@@ -147,14 +146,12 @@ export class ReviewDetail extends React.Component {
             <ScrollView
                 style={styles.container}
                 contentContainerStyle={styles.contentContainer}
-                refreshControl={
-                    <RefreshControl
-                    refreshing={this.state.refreshing}
-                    onRefresh={this._onRefresh}
-                    />
-                }
             >
-                <View style={{flex: 1, flexDirection: 'column', flexWrap: 'wrap', alignItems: 'flex-start', width:'100%'}}>
+                <KeyboardAvoidingView
+                    style={styles.container}
+                    behavior="padding"
+                >
+                <View style={{flex: 1, flexDirection: 'column', flexWrap: 'wrap', alignItems: 'flex-start', width:'100%', padding:10,}}>
                     <View style={styles.viewTop}>
                         <Text style={{fontSize: 21, fontWeight:'bold', marginBottom:5,}}>{this.state.application.CAMPAIGN.CAMPAIGN_TITLE}</Text>
                         <Text style={{color:'#919191', marginBottom:20,}}>{this.state.application.CAMPAIGN.CAMPAIGN_SUB_TITLE}</Text>
@@ -185,7 +182,7 @@ export class ReviewDetail extends React.Component {
                             <Text style={styles.RDTitle}>가이드</Text>
                         </View>
                         <View>
-                            <Text>{this.state.application.CAMPAIGN.CAMPAIGN_GUIDE}</Text>
+                            <HTML html={this.state.application.CAMPAIGN.CAMPAIGN_GUIDE} imagesMaxWidth={Dimensions.get('window').width.width*0.95} />
                         </View>
                     </View>
                     {this.state.endYN ? (
@@ -216,6 +213,7 @@ export class ReviewDetail extends React.Component {
                         </View>
                     )}
                 </View>
+                </KeyboardAvoidingView>
             </ScrollView>
         </View>
         );
@@ -230,7 +228,7 @@ const styles = StyleSheet.create({
         width:'100%',
         flex: 1,
         backgroundColor: '#fff',
-        padding:10,
+
         paddingBottom:80,
     },
     viewTop: {

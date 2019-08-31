@@ -41,6 +41,7 @@ export class Login extends React.Component {
         // 	return <AppIntroSlider renderItem={this._renderItem} slides={slides} onDone={this._onDone}/>;
         // }
         return (
+            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
                 <ImageBackground source={require("../../../assets/images/bg3.png")} style={{flex:1, justifyContent: 'center', alignItem:'center'}}>
                     <View style={styles.bottomBtn} >
                         <TextInput style = {styles.input}
@@ -69,6 +70,7 @@ export class Login extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </ImageBackground>
+            </KeyboardAvoidingView>
         );
     }
 }

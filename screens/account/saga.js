@@ -32,7 +32,7 @@ function* crawlingInstagram(action) {
     } catch(err) {
         action.navigation.pop();
         yield put(crawlingInfoFailure());
-        alert('정보 확인 필요!');
+        alert('아이디, 비밀번호 또는 인스타아이디를 \n 잘못 입력 하셨습니다.');
     }
 }
 

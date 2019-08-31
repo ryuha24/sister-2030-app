@@ -40,50 +40,51 @@ export class SignUp extends React.Component {
         return (
 
         <ScrollView style={styles.root} contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps='handled'>
-            <View style={styles.content}>
-                <TextInput style = {styles.inputStyle}
-                           underlineColorAndroid = "transparent"
-                           placeholder = "메일주소"
-                           placeholderTextColor = "rgba(0, 0, 0, 0.5)"
-                           autoCapitalize = "none"
-                           keyboardType= "default"
-                           returnKeyType="next"
-                           onChangeText = {this.joinEmail}/>
-                <TextInput style = {styles.inputStyle}
-                           underlineColorAndroid = "transparent"
-                           placeholder = "비밀번호"
-                           placeholderTextColor = "rgba(0, 0, 0, 0.5)"
-                           autoCapitalize = "none"
-                           returnKeyType="next"
-                           keyboardType= "default"
-                           secureTextEntry={true}
-                           onChangeText = {this.joinPw}/>
-                <TextInput style = {styles.inputStyle}
-                           underlineColorAndroid = "transparent"
-                           placeholder = "비밀번호 확인"
-                           placeholderTextColor = "rgba(0, 0, 0, 0.5)"
-                           autoCapitalize = "none"
-                           returnKeyType="next"
-                           keyboardType= "default"
-                           secureTextEntry={true}
-                           onChangeText = {this.joinRePw}/>
-                <TextInput style = {styles.inputStyle}
-                           underlineColorAndroid = "transparent"
-                           placeholder = "닉네임"
-                           placeholderTextColor = "rgba(0, 0, 0, 0.5)"
-                           keyboardType= "default"
-                           autoCapitalize = "none"
-                           onChangeText = {this.joinNickname}/>
-                <TextInput style = {styles.inputStyle}
-                           underlineColorAndroid = "transparent"
-                           placeholder = "인스타 아이디"
-                           placeholderTextColor = "rgba(0, 0, 0, 0.5)"
-                           autoCapitalize = "none"
-                           keyboardType= "default"
-                           returnKeyType="next"
-                           onChangeText = {this.joinInstaId}/>
-            </View>
-            <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
+            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+                <View style={styles.content}>
+                    <TextInput style = {styles.inputStyle}
+                               underlineColorAndroid = "transparent"
+                               placeholder = "메일주소"
+                               placeholderTextColor = "rgba(0, 0, 0, 0.5)"
+                               autoCapitalize = "none"
+                               keyboardType= "default"
+                               returnKeyType="next"
+                               onChangeText = {this.joinEmail}/>
+                    <TextInput style = {styles.inputStyle}
+                               underlineColorAndroid = "transparent"
+                               placeholder = "비밀번호"
+                               placeholderTextColor = "rgba(0, 0, 0, 0.5)"
+                               autoCapitalize = "none"
+                               returnKeyType="next"
+                               keyboardType= "default"
+                               secureTextEntry={true}
+                               onChangeText = {this.joinPw}/>
+                    <TextInput style = {styles.inputStyle}
+                               underlineColorAndroid = "transparent"
+                               placeholder = "비밀번호 확인"
+                               placeholderTextColor = "rgba(0, 0, 0, 0.5)"
+                               autoCapitalize = "none"
+                               returnKeyType="next"
+                               keyboardType= "default"
+                               secureTextEntry={true}
+                               onChangeText = {this.joinRePw}/>
+                    <TextInput style = {styles.inputStyle}
+                               underlineColorAndroid = "transparent"
+                               placeholder = "닉네임"
+                               placeholderTextColor = "rgba(0, 0, 0, 0.5)"
+                               keyboardType= "default"
+                               autoCapitalize = "none"
+                               onChangeText = {this.joinNickname}/>
+                    <TextInput style = {styles.inputStyle}
+                               underlineColorAndroid = "transparent"
+                               placeholder = "인스타 아이디"
+                               placeholderTextColor = "rgba(0, 0, 0, 0.5)"
+                               autoCapitalize = "none"
+                               keyboardType= "default"
+                               returnKeyType="next"
+                               onChangeText = {this.joinInstaId}/>
+                </View>
+
                 <View style={styles.footer}>
                     <TouchableOpacity
                     style={styles.footerBtnWrap}
@@ -100,6 +101,9 @@ export class SignUp extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    container:{
+        flex:1,
+    },
     root: {
         flex: 1,
     },
@@ -113,6 +117,7 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         width:'100%',
+        height:'100%',
         padding: 20,
     },
     inputStyle: {

@@ -17,6 +17,7 @@ export default class CampaignList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            index: 0,
             refreshing: false,
             campaigns: [],
             category: {
@@ -32,39 +33,91 @@ export default class CampaignList extends React.Component {
                 endcampaign: "종료",
                 review: "리뷰중",
                 dontuser: "미달"
-            }
-        }
+            },
+            all: [],
+            product: [],
+            consumer: [],
+            reporters: [],
+            comment: [],
+            selectedCategory:""
+        };
     }
     _onRefresh = () => {
         this.setState({refreshing: true});
+        let _this = this;
         fetch('https://admin-2030sisters.herokuapp.com/campaign/campaignList')
         .then((response) => response.json())
         .then((responseJson) => {
-            this.setState({
-                refreshing: false,
-                campaigns: responseJson
-            }, function(){
-
+            let consumer = responseJson.filter(function(campaign){
+                return campaign.category === "consumer";
+            });
+            let product = responseJson.filter(function(campaign){
+                return campaign.category === "product";
+            });
+            let reporters = responseJson.filter(function(campaign){
+                return campaign.category === "reporters";
+            });
+            let comment = responseJson.filter(function(campaign){
+                return campaign.category === "comment";
+            });
+            _this.setState({
+                isLoading: false,
+                campaigns: responseJson,
+                consumer: consumer,
+                product: product,
+                reporters: reporters,
+                comment: comment
             });
 
         })
     };
     componentDidMount(){
+        let _this = this;
+
         return fetch('https://admin-2030sisters.herokuapp.com/campaign/campaignList')
         .then((response) => response.json())
         .then((responseJson) => {
-            this.setState({
-                isLoading: false,
-                campaigns: responseJson
-            }, function(){
-
+            let consumer = responseJson.filter(function(campaign){
+                return campaign.category === "consumer";
+            });
+            let product = responseJson.filter(function(campaign){
+                return campaign.category === "product";
+            });
+            let reporters = responseJson.filter(function(campaign){
+                return campaign.category === "reporters";
+            });
+            let comment = responseJson.filter(function(campaign){
+                return campaign.category === "comment";
             });
 
+            _this.setState({
+                isLoading: false,
+                campaigns: responseJson,
+                all: responseJson,
+                consumer: consumer,
+                product: product,
+                reporters: reporters,
+                comment: comment
+            });
         })
         .catch((error) =>{
             console.error(error);
         });
     }
+    topNav(category) {
+        if (category === "all") {
+            this.setState({
+                selectedCategory: "",
+                campaigns: this.state.all
+            });
+        } else {
+            this.setState({
+                selectedCategory: category,
+                campaigns: this.state[category]
+            });
+        }
+    }
+
     render() {
         if(this.state.isLoading){
             return(
@@ -77,23 +130,35 @@ export default class CampaignList extends React.Component {
         return (
             // onPress={this._moveCampaignDetail} 디테일 페이지 고고쓰
         <View style={styles.container}>
+            <View style={styles.topnav}>
+                <TouchableOpacity onPress={()=>this.topNav('all')} style={this.state.selectedCategory === "" ? styles.selectedBox : styles.topnavbox}>
+                    <Text>전체</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>this.topNav('consumer')} style={this.state.selectedCategory === "consumer" ? styles.selectedBox : styles.topnavbox}>
+                    <Text>체험단</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>this.topNav('product')} style={this.state.selectedCategory === "product" ? styles.selectedBox : styles.topnavbox}>
+                    <Text>제품</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>this.topNav('reporters')} style={this.state.selectedCategory === "reporters" ? styles.selectedBox : styles.topnavbox}>
+                    <Text>기자단</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>this.topNav('comment')} style={this.state.selectedCategory === "comment" ? styles.selectedBox : styles.topnavbox}>
+                    <Text>댓글</Text>
+                </TouchableOpacity>
+            </View>
             <ScrollView
                 style={styles.container}
                 contentContainerStyle={styles.contentContainer}
-                refreshControl={
-                    <RefreshControl
-                    refreshing={this.state.refreshing}
-                    onRefresh={this._onRefresh}
-                    />
-                }
             >
                 <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', paddingLeft:7, paddingRight:7,}}>
                     {
-                        this.state.campaigns.map((campaign,index) => {
-                            return (
+                        this.state.campaigns.length>0 ?
+                            this.state.campaigns.map((campaign,index) => {
+                                return (
                                 <TouchableOpacity key={index} onPress={()=>this._moveCampaignDetail(campaign.id)} style={styles.itemBtn}>
                                     <View style={styles.itemBox}>
-                                        <ImageBackground source={{uri:campaign.thumbnail}} style={{width: '100%', height: '100%'}} imageStyle={{ borderRadius: 6 }}></ImageBackground>
+                                        <ImageBackground source={{uri:campaign.thumbnail}} style={{width: '100%', height: '100%'}} imageStyle={{ borderRadius: 6 }} />
                                         <View style={{flexDirection:'row', marginTop:12,}}>
                                             <Text style={styles.itemCategory}>{this.state.category[campaign.category]}</Text>
                                             <Text style={styles.point}>{campaign.point}</Text>
@@ -107,8 +172,12 @@ export default class CampaignList extends React.Component {
                                         </View>
                                     </View>
                                 </TouchableOpacity>
-                            )
-                        })
+                                )
+                            })
+                        :
+                        <View style={styles.itemBox}>
+                            <Text style={styles.noCampaignText}>캠페인이 없습니다.</Text>
+                        </View>
                     }
                 </View>
             </ScrollView>
@@ -172,5 +241,30 @@ const styles = StyleSheet.create({
     },
     itemUsersMax: {
         color:'#919191',
+    },
+    topnav: {
+        width: '100%',
+        height: 50,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    topnavbox: {
+        alignItems: 'center',
+        flex:1,
+        paddingBottom: 15
+    },
+    selectedBox: {
+        alignItems: 'center',
+        flex:1,
+        paddingBottom: 15,
+        borderBottomWidth: 2,
+        borderBottomColor: '#ed3847'
+    },
+    noCampaignText: {
+        color: "#ed3847",
+        fontSize: 18,
+        fontWeight: '500',
+
     }
 });

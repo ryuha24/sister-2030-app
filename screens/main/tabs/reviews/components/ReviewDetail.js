@@ -18,6 +18,7 @@ import dateFormat from 'dateformat';
 import {connect} from "react-redux";
 import axios from "axios";
 import LottieView from "lottie-react-native";
+import HTML from 'react-native-render-html';
 
 export class ReviewDetail extends React.Component {
     constructor(props) {

@@ -209,10 +209,7 @@ const styles = StyleSheet.create({
         color:'#fff',
     },
     footer: {
-        position:'absolute',
-        left:0,
-        right:0,
-        bottom:0,
+
     },
     footerBtnWrap:{
         width:'100%',

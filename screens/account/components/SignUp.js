@@ -84,11 +84,10 @@ export class SignUp extends React.Component {
                                returnKeyType="next"
                                onChangeText = {this.joinInstaId}/>
                 </View>
-
                 <View style={styles.footer}>
                     <TouchableOpacity
-                    style={styles.footerBtnWrap}
-                    onPress={this.nextStep}
+                        style={styles.footerBtnWrap}
+                        onPress={this.nextStep}
                     >
                         <Text style={styles.footerBtn}>다음</Text>
                     </TouchableOpacity>
@@ -103,6 +102,7 @@ export class SignUp extends React.Component {
 const styles = StyleSheet.create({
     container:{
         flex:1,
+        flexDirection: 'column',
     },
     root: {
         flex: 1,
@@ -116,8 +116,7 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        width:'100%',
-        height:'100%',
+        flexDirection: 'column',
         padding: 20,
     },
     inputStyle: {
@@ -137,10 +136,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     footer: {
-        position:'absolute',
-        left:0,
-        right:0,
-        bottom:0,
+        marginTop:50,
     },
     footerBtnWrap:{
         width:'100%',
